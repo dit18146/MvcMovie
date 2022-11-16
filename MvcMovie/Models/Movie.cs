@@ -5,15 +5,16 @@ namespace MvcMovie.Models
     public class Movie
     {
      
-        public int Id { get;}
+        public int Id { get; }
 
-        public string? Title { get;}
+        public string? Title { get; }
 
         public Movie(int id, string? title)
         {
             Id = id;
             Title = title;
         }
+       
 
        
 

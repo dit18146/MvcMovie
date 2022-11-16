@@ -1,4 +1,5 @@
-﻿using MvcMovie.Models;
+﻿using Microsoft.Data.SqlClient;
+using MvcMovie.Models;
 
 namespace MvcMovie.Services
 {
@@ -16,18 +17,28 @@ namespace MvcMovie.Services
             _db.Items.Add(item);
         }
 
+        public bool CheckIfExists(int id)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void ClearDatabase()
+        {
+            throw new NotImplementedException();
+        }
+
         public void Delete(Movie item)
         {
             _db.Items.Remove(item);
         }
 
-        public Movie GetById(int? id)
+        public Movie? GetById(int? id)
         {
-            return  _db.Items.FirstOrDefault(x => x.Id == id);
+              return _db.Items.FirstOrDefault(x => x.Id == id);
             
         }
 
-        public Movies GetCollection()
+        public Movies? GetCollection()
         {
             return _db;
         }
@@ -50,5 +61,9 @@ namespace MvcMovie.Services
             return db;
 
         }
+
+        
+
+
     }
 }

@@ -1,4 +1,5 @@
-﻿using MvcMovie.Models;
+﻿using Microsoft.Data.SqlClient;
+using MvcMovie.Models;
 
 namespace MvcMovie.Services
 {
@@ -9,18 +10,22 @@ namespace MvcMovie.Services
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
-        Movie GetById(int? id);
+        Movie? GetById(int? id);
 
         /// <summary>
         /// 
         /// </summary>
         /// <returns></returns>
-        Movies GetCollection();
+        Movies? GetCollection();
 
         void Add(Movie item);
 
         void Update(Movie item);
 
-        void Delete(Movie item);    
+        void Delete(Movie item);
+
+        bool CheckIfExists(int id);
+
+        void ClearDatabase();
     }
 }

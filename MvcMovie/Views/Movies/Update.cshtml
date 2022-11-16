@@ -1,0 +1,46 @@
+﻿@model Movie
+
+@if(Model != null)
+{
+    <div class="form-group">
+
+    <br />
+
+    <h1 style ="text-align: center;">Update Movie Attributes</h1>
+
+    <form asp-route = "Update_Post" method = "post">
+
+        <label for="Id" class="form-label mt-4">Id</label>
+
+        <input asp-for = "Id" type="number" class="form-control" id="Id" aria-describedby="Id" placeholder="Enter Id">
+
+        <small id="Id" class="form-text text-muted">Movie id should be a number</small>
+
+        <br />
+
+        <label for="Title" class="form-label mt-4">Title</label>
+
+        <input asp-for="Title" type="text" class="form-control" id="Id" aria-describedby="Title" placeholder="Enter Title">
+
+        <small id="Id" class="form-text text-muted">Movie Title should be a text</small>
+
+        <br />
+
+        <br />
+
+        <button type="submit" class="btn btn-success btn-lg">Update Database</button>
+
+        <br />
+
+        <h1 style="color:red;"> @ViewData["fail"] </h1>
+
+    </form>
+</div>
+}
+else
+{
+    <br />
+
+    <h1 style="color:red;"> @ViewData["fail"] </h1>
+}
+

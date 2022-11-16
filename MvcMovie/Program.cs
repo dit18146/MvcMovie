@@ -7,9 +7,9 @@ var builder = WebApplication.CreateBuilder(args);
 //builder.Services.AddDbContext<MvcMovieContext>(options =>
 //options.UseSqlServer(builder.Configuration.GetConnectionString("MvcMovieContext") ?? throw new InvalidOperationException("Connection string 'MvcMovieContext' not found.")));
 
-builder.Services.AddSingleton<IMovieService, MemoryMovieService>();   //When IMovieService is used an instance of MemoryMovieService is created 
+//builder.Services.AddSingleton<IMovieService, MemoryMovieService>();   //When IMovieService is used an instance of MemoryMovieService is created 
 
-//builder.Services.AddSingleton<IMovieService, DbMovieService>();
+builder.Services.AddSingleton<IMovieService, DbMovieService>();
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();

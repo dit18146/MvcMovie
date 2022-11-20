@@ -52,8 +52,16 @@ build_metadata.AdditionalFiles.CssScope =
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcTW92aWVzREJcSW5kZXguY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
+[C:/Users/papachristouj/source/repos/MvcMovie/MvcMovie/Views/Movies/Categories_Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcTW92aWVzXENhdGVnb3JpZXNfSW5kZXguY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
 [C:/Users/papachristouj/source/repos/MvcMovie/MvcMovie/Views/Movies/Create.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcTW92aWVzXENyZWF0ZS5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/papachristouj/source/repos/MvcMovie/MvcMovie/Views/Movies/Create_Category.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcTW92aWVzXENyZWF0ZV9DYXRlZ29yeS5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
 [C:/Users/papachristouj/source/repos/MvcMovie/MvcMovie/Views/Movies/Delete.cshtml]
@@ -76,8 +84,16 @@ build_metadata.AdditionalFiles.CssScope =
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcTW92aWVzXFVwZGF0ZS5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
+[C:/Users/papachristouj/source/repos/MvcMovie/MvcMovie/Views/Movies/Update_Category.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcTW92aWVzXFVwZGF0ZV9DYXRlZ29yeS5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
 [C:/Users/papachristouj/source/repos/MvcMovie/MvcMovie/Views/Shared/Error.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXEVycm9yLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/papachristouj/source/repos/MvcMovie/MvcMovie/Views/Shared/_Dropdown.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXF9Ecm9wZG93bi5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
 [C:/Users/papachristouj/source/repos/MvcMovie/MvcMovie/Views/Shared/_Notification.cshtml]

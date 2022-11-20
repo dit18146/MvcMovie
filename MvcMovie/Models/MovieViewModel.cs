@@ -16,6 +16,18 @@ namespace MvcMovie.Models
         [MaxLength(20)]
         public string? Title { get; set; }
 
+
+        [Display(Name = "Description")]
+        [MaxLength(100)]
+        public string? Description { get; set; }
+
+
+        [Display(Name = "MovieTypeId")]
+        [Range(0, 1000)]
+        public int? MovieTypeId { get; set; }
+
+
+
         public int i;
 
 

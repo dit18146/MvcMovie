@@ -1,4 +1,5 @@
 ﻿using MvcMovie.Models;
+using System.Collections.Generic;
 using System.Data.SQLite;
 
 namespace MvcMovie.Services
@@ -34,6 +35,7 @@ namespace MvcMovie.Services
 
         public void ReadData()
         {
+
             CreateConnection();
 
             SQLiteDataReader sqlite_datareader;
@@ -42,7 +44,7 @@ namespace MvcMovie.Services
 
             sqlite_cmd = conn.CreateCommand();
 
-            sqlite_cmd.CommandText = "SELECT * FROM Movie";
+            sqlite_cmd.CommandText = "SELECT Movie.Id, Title, Description, Name FROM Movie, MovieType WHERE MovieType.Id = Movie.MovieTypeId";
 
             sqlite_datareader = sqlite_cmd.ExecuteReader();
 
@@ -51,10 +53,12 @@ namespace MvcMovie.Services
             {
                
 
-                    db.Items.Add(new Movie(sqlite_datareader.GetInt16(0), sqlite_datareader.GetString(1)));
+                    db.Items.Add(new Movie(sqlite_datareader.GetInt16(0), sqlite_datareader.GetString(1), sqlite_datareader.GetString(2), sqlite_datareader.GetString(3)));
 
                 
             }
+
+            sqlite_datareader.Close();
 
             //conn.Close();
 
@@ -72,14 +76,15 @@ namespace MvcMovie.Services
 
             sqlite_cmd = conn.CreateCommand();
 
-            sqlite_cmd.CommandText = "INSERT INTO movie(id, title) VALUES (" + item.Id + " , " + "'" + item.Title + "' ) ;";
+            sqlite_cmd.CommandText = "INSERT INTO movie(title, description, MovieTypeId) VALUES (" + "'" + item.Title + "'" + "," + "' " + item.Description + "'" + ", " + item.MovieTypeId + ") ;";
 
 
-            sqlite_datareader = sqlite_cmd.ExecuteReader();
+            sqlite_cmd.ExecuteReader();
 
             //conn.Close();
-
         }
+
+
 
         public void Delete(Movie item)
         {
@@ -98,9 +103,11 @@ namespace MvcMovie.Services
 
             while (sqlite_datareader.Read())
             {
-                db.Items.Add(new Movie(sqlite_datareader.GetInt16(0), sqlite_datareader.GetString(1)));
+                db.Items.Add(new Movie(sqlite_datareader.GetInt16(0), sqlite_datareader.GetString(1), sqlite_datareader.GetString(2)));
 
             }
+
+            sqlite_datareader.Close();
 
             //conn.Close();
         }
@@ -127,10 +134,11 @@ namespace MvcMovie.Services
             //TODO: Handle Not Found
             while (sqlite_datareader.Read())
             {
-                db.Items.Add(new Movie(sqlite_datareader.GetInt16(0), sqlite_datareader.GetString(1)));
+                db.Items.Add(new Movie(sqlite_datareader.GetInt16(0), sqlite_datareader.GetString(1), sqlite_datareader.GetString(2), sqlite_datareader.GetInt16(3)));
 
             }
-            //conn.Close();
+
+            sqlite_datareader.Close();
 
             return db.Items.FirstOrDefault(x => x.Id == id);
         }
@@ -145,18 +153,18 @@ namespace MvcMovie.Services
 
             sqlite_cmd = conn.CreateCommand();
 
-            sqlite_cmd.CommandText = "UPDATE movie SET title = " + "'" + item.Title + "'" + " WHERE id = " + item.Id;
+            sqlite_cmd.CommandText = "UPDATE movie SET title = " + "'" + item.Title + "'" + ", description = " + "'" + item.Description + "'" + "," + "movieTypeId = " + "'" + item.MovieTypeId + "'" + "  WHERE id = " + item.Id + ";";
 
             sqlite_datareader = sqlite_cmd.ExecuteReader();
 
 
             while (sqlite_datareader.Read())
             {
-                db.Items.Add(new Movie(sqlite_datareader.GetInt16(0), sqlite_datareader.GetString(1)));
+                db.Items.Add(new Movie(sqlite_datareader.GetInt16(0), sqlite_datareader.GetString(1), sqlite_datareader.GetString(2)));
 
             }
 
-            //conn.Close();
+            sqlite_datareader.Close();
 
         }
 
@@ -181,32 +189,30 @@ namespace MvcMovie.Services
 
             sqlite_datareader = sqlite_cmd.ExecuteReader();
 
-           
-
             if (sqlite_datareader.HasRows)
             {
-                //conn.Close();
+                sqlite_datareader.Close();
 
                 return true;
             }
 
-               
-
             else
             {
-                //conn.Close();
+                sqlite_datareader.Close();
 
                 return false;
             }
-           
-
-            
 
         }
 
         public void ClearDatabase()
         {
             db.Items.Clear();
+        }
+
+        public void CloseConnection()
+        {
+            conn.Close();
         }
     }
 }

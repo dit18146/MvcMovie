@@ -7,6 +7,8 @@
     <tr> 
         <th>ID</th>
         <th>Title</th>
+        <th>Description</th>
+        <th> Category </th>
         <th></th>
         <th></th>
     </tr>
@@ -16,6 +18,10 @@
                 <td>@item.Id</td>
 
                 <td>@item.Title</td>
+
+                <td>@item.Description</td>
+
+                <td>@item.Name</td>
             
                 <td><a href="@Url.RouteUrl("Movies_Details", new {id = item.Id})">detail1</a></td>
 

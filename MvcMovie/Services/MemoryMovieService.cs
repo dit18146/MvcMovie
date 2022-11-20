@@ -17,12 +17,22 @@ namespace MvcMovie.Services
             _db.Items.Add(item);
         }
 
+        public void Add_Category(Movie item)
+        {
+            throw new NotImplementedException();
+        }
+
         public bool CheckIfExists(int id)
         {
             throw new NotImplementedException();
         }
 
         public void ClearDatabase()
+        {
+            throw new NotImplementedException();
+        }
+
+        public void CloseConnection()
         {
             throw new NotImplementedException();
         }
@@ -45,20 +55,18 @@ namespace MvcMovie.Services
 
         public void Update(Movie item)
         {
-            _db.Items[item.Id] = item;
+            throw new NotImplementedException();
+        }
+
+        public void Update_Category(Movie item)
+        {
+            throw new NotImplementedException();
         }
 
         private Movies CreateDb(int size)
         {
 
-            var db = new Movies();
-
-            for (int i = 0; i < size; i++)
-            {
-                db.Items.Add(new Movie(i, "Star Wars " + (i + 1)));
-            }
-
-            return db;
+            throw new NotImplementedException();
 
         }
 

@@ -9,6 +9,7 @@ using Microsoft.Data.SqlClient;
 using System.Net;
 using System.Xml.Linq;
 using System.Data.Entity;
+using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace MvcMovie.Controllers
 {
@@ -17,11 +18,16 @@ namespace MvcMovie.Controllers
     public class MoviesController : Controller
     {
         private readonly IMovieService _movieService;
-        
-        
-        public MoviesController(IMovieService movieService)
+
+        private readonly IMovieTypeService _movieTypeService;
+
+
+        public MoviesController(IMovieService movieService, IMovieTypeService movieTypeService)
         {
-            _movieService = movieService;        
+            _movieService = movieService;
+
+            _movieTypeService = movieTypeService;
+
         }
 
         [Route("", Name = "Movies_Index")]
@@ -54,7 +60,7 @@ namespace MvcMovie.Controllers
             var model = _movieService.GetById(id);
 
             return View(model);
-   
+
         }
 
         [Route("create", Name = "Create"), HttpGet]
@@ -76,7 +82,18 @@ namespace MvcMovie.Controllers
             {
                 if (_movieService.CheckIfExists(model.Id) == false)
                 {
-                    _movieService.Add(new Movie(model.Id, model.Title));
+                    if (model.Description == null)
+
+                        model.Description = "N/A";
+
+
+                    if (model.MovieTypeId == null)
+
+                        _movieService.Add(new Movie(model.Id, model.Title, model.Description, 10));
+                    else
+                    {
+                        _movieService.Add(new Movie(model.Id, model.Title, model.Description, (int)model.MovieTypeId));
+                    }
                 }
                 else
                     ViewData["fail"] = "Id exists, please reenter id and movie title";
@@ -93,7 +110,7 @@ namespace MvcMovie.Controllers
         }
 
 
-        [Route("update/{id:int?}", Name = "Update_Get"), HttpGet]     
+        [Route("update/{id:int?}", Name = "Update_Get"), HttpGet]
         public IActionResult Update(int? id)
         {
             var model = _movieService.GetById(id);
@@ -113,7 +130,7 @@ namespace MvcMovie.Controllers
 
                 return View(model);
             }
-                
+
 
             TempData["fail"] = "Wrong Input, model validation failed";
 
@@ -125,10 +142,16 @@ namespace MvcMovie.Controllers
         [ValidateAntiForgeryToken]
         public IActionResult Update(MovieViewModel model)
         {
-            
+
             if (ModelState.IsValid)
             {
-                _movieService.Update(new Movie(model.Id, model.Title));
+                if (model.MovieTypeId == null)
+
+                    _movieService.Update(new Movie(model.Id, model.Title, model.Description, 10));
+
+                else
+
+                    _movieService.Update(new Movie(model.Id, model.Title, model.Description, (int)model.MovieTypeId));
 
                 TempData["success"] = "Upadated successfully";
 
@@ -181,7 +204,7 @@ namespace MvcMovie.Controllers
             {
                 if (_movieService.CheckIfExists(model.Id) == true)
                 {
-                    _movieService.Delete(new Movie(model.Id, model.Title));
+                    _movieService.Delete(new Movie(model.Id, model.Title, model.Description));
 
                     return RedirectToAction(nameof(Index));
                 }
@@ -192,5 +215,117 @@ namespace MvcMovie.Controllers
             return RedirectToAction(nameof(Index));
         }
 
+        /*public ActionResult SelectCategory()
+        {
+
+            List<SelectListItem> items = new List<SelectListItem>();
+
+            items.Add(new SelectListItem { Text = "Action", Value = "0" });
+
+            items.Add(new SelectListItem { Text = "Drama", Value = "1" });
+
+            items.Add(new SelectListItem { Text = "Comedy", Value = "2", Selected = true });
+
+            items.Add(new SelectListItem { Text = "Science Fiction", Value = "3" });
+
+            ViewBag.MovieType = items;
+
+            return View();
+
+        }*/
+
+        [Route("categories", Name = "Categories_Index")]
+        public IActionResult Categories_Index()
+        {
+            _movieTypeService.ClearDatabase();
+
+            var model = _movieTypeService.GetCollection();
+
+            return View(model);
+
+        }
+
+
+        [Route("createCategory", Name = "Create_Category"), HttpGet]
+        public IActionResult Create_Category()
+        {
+            var model = new MovieTypeViewModel();
+
+            return View(model);
+        }
+
+
+
+        [Route("createCategory", Name = "Create_Category_Post"), HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult Create_Category(MovieTypeViewModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                _movieTypeService.Add(new MovieType(model.Id, model.Name));
+
+                TempData["success"] = "Created successfully";
+
+                return RedirectToAction(nameof(Categories_Index));
+            }
+
+            ViewData["fail"] = "Wrong Input";
+
+            return View(model);
+
+        }
+
+        [Route("updateCategory/{id:int?}", Name = "Update_Category_Get"), HttpGet]
+        public IActionResult Update_Category(int? id)
+        {
+            var model = _movieTypeService.GetById(id);
+
+            if (id != null)
+            {
+                if (_movieTypeService.CheckIfExists((int)id))
+                {
+                    return View(model);
+                }
+
+            }
+
+            else
+            {
+                id = 1;
+
+                return View(model);
+            }
+
+
+            TempData["fail"] = "Wrong Input, model validation failed";
+
+            return RedirectToAction(nameof(Index));
+
+        }
+
+        [Route("updateCategory", Name = "Update_Category_Post"), HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult Update(MovieTypeViewModel model)
+        {
+
+            if (ModelState.IsValid)
+            {
+                _movieTypeService.Update(new MovieType(model.Id, model.Name));
+
+                TempData["success"] = "Upadated successfully";
+
+                return RedirectToAction(nameof(Categories_Index));
+            }
+
+            TempData["fail"] = "Wrong Input, model validation failed";
+
+            return RedirectToAction(nameof(Categories_Index));
+
+        }
+
+
+
     }
+    
+    
 }

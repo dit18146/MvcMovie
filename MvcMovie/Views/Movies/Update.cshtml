@@ -38,20 +38,22 @@
 
             Movie Type
 
-            <select id="MovieTypeId" name="MovieTypeId">
+                <select id="MovieTypeId" name="MovieTypeId" class="form-select">
 
-                <option value=""></option>
+                @foreach(var items in Model.Categories.Items)
+                {
 
-                <option value="6">Adventure</option>
-
-                <option value="7">Action</option>
-
-                <option value="8">Comedy</option>
-
-                <option value="9">Horror</option>
-
-                <option value="10">N/A</option>
-
+                    if (Model.MovieTypeId == items.Id)
+                    {
+                            <option value="@items.Id" selected>@items.Name</option>
+                    }
+                    else
+                    {
+                            <option value="@items.Id">@items.Name</option>
+                    }
+                       
+                }
+                
             </select>
 
             <br />

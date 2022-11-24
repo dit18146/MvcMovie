@@ -10,7 +10,7 @@
 
         <label for="Id" class="form-label mt-4">Id</label>
 
-        <input asp-for="Id" type="number" class="form-control" id="Id" aria-describedby="Id" placeholder="Enter Id">
+        <input asp-for="Id" type="number" class="form-control" id="Id" aria-describedby="Id" placeholder="Enter Id" readonly>
 
         <small id="Id" class="form-text text-muted">Movie id should be a number</small>
 
@@ -18,7 +18,7 @@
 
         <label for="Title" class="form-label mt-4">Title</label>
 
-        <input asp-for="Title" type="text" class="form-control" id="Id" aria-describedby="Title" placeholder="Enter Title">
+        <input asp-for="Title" type="text" class="form-control" id="Id" aria-describedby="Title" placeholder="Enter Title" readonly>
 
         <small id="Id" class="form-text text-muted">Movie Title should be a text</small>
 
@@ -26,12 +26,39 @@
 
         <label for="Description" class="form-label mt-4">Description</label>
 
-        <textarea asp-for="Description" type="text" class="form-control" id="Id" aria-describedby="Description" placeholder="Enter Description"> </textarea>
+        <textarea asp-for="Description" type="text" class="form-control" id="Id" aria-describedby="Description" placeholder="Enter Description" readonly> </textarea>
 
         <small id="Id" class="form-text text-muted">Type movie description</small>
 
         <br />
+        
+         <fieldset>
 
+            Movie Type
+
+                <select id="MovieTypeId" name="MovieTypeId" class="form-select">
+
+                @foreach(var items in Model.Categories.Items)
+                {
+
+                    if (Model.MovieTypeId == items.Id)
+                    {
+                            <option value = "@items.Id" selected>@items.Name</option>
+                    }
+                    else
+                    {
+                            <option value = "@items.Id">@items.Name</option>
+                    }
+                       
+                }
+                
+            </select>
+
+            <br />
+
+        </fieldset>
+
+        <br />
 
         <button  type="submit" class="btn btn-primary btn-lg">Delete from Database</button>
 

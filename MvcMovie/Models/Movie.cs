@@ -15,6 +15,8 @@ namespace MvcMovie.Models
 
         public string? Name { get; }
 
+        public MovieTypes Categories { get; set; } 
+
 
 
         public Movie(int id, string? title, string description)
@@ -26,7 +28,7 @@ namespace MvcMovie.Models
             Description = description;
         }
 
-        public Movie(int id, string? title, string description, int movieTypeId)
+        public Movie(int id, string? title, string description, int? movieTypeId)
         {
             Id = id;
 
@@ -46,6 +48,11 @@ namespace MvcMovie.Models
             Description = description;
 
             Name = name;
+        }
+
+        public Movie(MovieTypes categories)
+        {
+            Categories = categories;
         }
 
 

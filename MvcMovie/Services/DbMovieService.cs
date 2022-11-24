@@ -116,7 +116,7 @@ namespace MvcMovie.Services
         {
             if (id == null)
 
-                id = 1;
+                id = 18;
 
             CreateConnection();
 
@@ -131,10 +131,12 @@ namespace MvcMovie.Services
 
             sqlite_datareader = sqlite_cmd.ExecuteReader();
 
+            db.Items.Clear();   
+
             //TODO: Handle Not Found
             while (sqlite_datareader.Read())
             {
-                db.Items.Add(new Movie(sqlite_datareader.GetInt16(0), sqlite_datareader.GetString(1), sqlite_datareader.GetString(2), sqlite_datareader.GetInt16(3)));
+                db.Items.Add(new Movie(sqlite_datareader.GetInt16(0), sqlite_datareader.GetString(1), sqlite_datareader.GetString(2), sqlite_datareader.GetInt32(3)));
 
             }
 

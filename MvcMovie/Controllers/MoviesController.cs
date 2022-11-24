@@ -49,7 +49,10 @@ namespace MvcMovie.Controllers
 
             _movieService.ClearDatabase();
 
+            _movieTypeService.ClearDatabase();
+
             var model = _movieService.GetCollection();
+            
 
             return View(model);
         }
@@ -67,6 +70,8 @@ namespace MvcMovie.Controllers
         public IActionResult Create()
         {
             var model = new MovieViewModel();
+
+            model.Categories = _movieTypeService.GetCollection();
 
             return View(model);
         }
@@ -115,6 +120,8 @@ namespace MvcMovie.Controllers
         {
             var model = _movieService.GetById(id);
 
+            model.Categories = _movieTypeService.GetCollection();
+
             if (id != null)
             {
                 if (_movieService.CheckIfExists((int)id))
@@ -126,7 +133,7 @@ namespace MvcMovie.Controllers
 
             else
             {
-                id = 1;
+                id = 18;
 
                 return View(model);
             }
@@ -172,6 +179,8 @@ namespace MvcMovie.Controllers
 
             var model = _movieService.GetById(id);
 
+            model.Categories = _movieTypeService.GetCollection();
+
             if (id != null)
             {
 
@@ -214,25 +223,6 @@ namespace MvcMovie.Controllers
 
             return RedirectToAction(nameof(Index));
         }
-
-        /*public ActionResult SelectCategory()
-        {
-
-            List<SelectListItem> items = new List<SelectListItem>();
-
-            items.Add(new SelectListItem { Text = "Action", Value = "0" });
-
-            items.Add(new SelectListItem { Text = "Drama", Value = "1" });
-
-            items.Add(new SelectListItem { Text = "Comedy", Value = "2", Selected = true });
-
-            items.Add(new SelectListItem { Text = "Science Fiction", Value = "3" });
-
-            ViewBag.MovieType = items;
-
-            return View();
-
-        }*/
 
         [Route("categories", Name = "Categories_Index")]
         public IActionResult Categories_Index()

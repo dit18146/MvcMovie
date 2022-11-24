@@ -26,6 +26,10 @@ namespace MvcMovie.Models
         [Range(0, 1000)]
         public int? MovieTypeId { get; set; }
 
+        [Display(Name = "Categories")]
+        public MovieTypes? Categories { get; set; }  
+
+
 
 
         public int i;

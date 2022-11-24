@@ -69,6 +69,8 @@ namespace MvcMovie.Controllers
         [Route("create", Name = "Create"), HttpGet]
         public IActionResult Create()
         {
+            _movieTypeService.ClearDatabase();
+
             var model = new MovieViewModel();
 
             model.Categories = _movieTypeService.GetCollection();
@@ -118,6 +120,8 @@ namespace MvcMovie.Controllers
         [Route("update/{id:int?}", Name = "Update_Get"), HttpGet]
         public IActionResult Update(int? id)
         {
+            _movieTypeService.ClearDatabase();
+
             var model = _movieService.GetById(id);
 
             model.Categories = _movieTypeService.GetCollection();
@@ -162,12 +166,12 @@ namespace MvcMovie.Controllers
 
                 TempData["success"] = "Upadated successfully";
 
-                return RedirectToAction(nameof(Index));
+                return RedirectToAction(nameof(Update), new { id = model.Id });
             }
 
             TempData["fail"] = "Wrong Input, model validation failed";
 
-            return RedirectToAction(nameof(Index));
+            return RedirectToAction(nameof(Update), new { id = model.Id });
 
         }
 
@@ -176,6 +180,7 @@ namespace MvcMovie.Controllers
         [Route("delete/{id:int?}", Name = "Delete_Get"), HttpGet]
         public IActionResult Delete(int? id)
         {
+            _movieTypeService.ClearDatabase();
 
             var model = _movieService.GetById(id);
 
@@ -214,6 +219,8 @@ namespace MvcMovie.Controllers
                 if (_movieService.CheckIfExists(model.Id) == true)
                 {
                     _movieService.Delete(new Movie(model.Id, model.Title, model.Description));
+
+                    TempData["success"] = "Upadated successfully";
 
                     return RedirectToAction(nameof(Index));
                 }

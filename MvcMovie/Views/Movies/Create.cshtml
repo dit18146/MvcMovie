@@ -3,6 +3,7 @@
 
 
 
+
 <div class="form-group">
 
     <br />
@@ -49,56 +50,74 @@
 
          <br />
 
-        <button id="subButton" onclick="dialog()" type="submit" class="btn btn-secondary btn-lg">Add to Database</button>
+        <div class ="btn">
+
+            <button id="subButton" type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#MyPopUp">Insert to database</button>
+         
+        </div>
+        
 
         <br />
 
         <h1 style="color:red;"> @ViewData["fail"] </h1>
 
-    </form>
+
+        <div id="MyPopUp"  class="modal fade" role="dialog">
+
+            <div class="modal-dialog">
+
+                <div class="modal-content">
+
+                    <div class="modal-header">
+
+                        <h5 class="modal-title">Warning</h5>
+
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
+
+                            <span aria-hidden="true"></span>
+
+                        </button>
+
+                    </div>
+
+                    <div class="modal-body">
+
+                        <p>You are about to make changes in the database. Are you sure you want to continue?</p>
+
+                    </div>
+
+                    <div class="modal-footer">
+
+                        <button type="submit" class="btn btn-primary">Save changes</button>
+
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+
+                    </div>
+
+                </div>
+
+            </div>
     
-</div>
-
-
-
-
-
-<div class="modal">
-    <div class="modal-dialog" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title">Warning</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true"></span>
-                </button>
-            </div>
-            <div class="modal-body">
-                <p>You are about to make changes in the database. Are you sure you want to continue?</p>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-primary">Save changes</button>
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-            </div>
         </div>
-    </div>
+
+    </form>
+
 </div>
-
-
 
 @section Scripts
 {
 
     <script type="text/javascript">
         
-            function dialog() {
-
-               $("#modal").modal("show");
-            }
-
-          
-
-
-
+            
+            $(document).ready(function() 
+            {
+                $(".btn").click(function (e)
+                {
+                    $('#MyPopUp').modal('show');
+                });
+            });
+ 
     </script>
 
 }

@@ -11,6 +11,7 @@ using System.Xml.Linq;
 using System.Data.Entity;
 using Microsoft.AspNetCore.Mvc.Rendering;
 
+
 namespace MvcMovie.Controllers
 {
     [Route("movies")]
@@ -27,6 +28,51 @@ namespace MvcMovie.Controllers
             _movieService = movieService;
 
             _movieTypeService = movieTypeService;
+
+        }
+
+        [Route("json", Name = "Movies_Json_Index")]
+        public IActionResult Json_Index()
+        {
+            var model = _movieService.GetCollection();
+
+            return Json(model);
+        }
+
+        [Route("json-detail/{id:int?}", Name = "Movies_Json_Details")] //naming is important        
+        public IActionResult Json_Details(int? id)
+        {
+            var model = _movieService.GetById(id);
+
+            return Json(model);
+
+        }
+
+    
+
+        [Route("json-update", Name = "Update_Json_Post"), HttpPost]
+        public IActionResult Json_Update(MovieViewModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                if (model.MovieTypeId == null)
+
+                    _movieService.Update(new Movie(model.Id, model.Title, model.Description, 10));
+
+                else
+
+                    _movieService.Update(new Movie(model.Id, model.Title, model.Description, (int)model.MovieTypeId));
+
+                TempData["success"] = "Upadated successfully";
+
+                return Json(model);
+
+            }
+
+            TempData["fail"] = "Wrong Input, model validation failed";
+
+            return Json(model);
+
 
         }
 
@@ -63,7 +109,6 @@ namespace MvcMovie.Controllers
             var model = _movieService.GetById(id);
 
             return View(model);
-
         }
 
         [Route("create", Name = "Create"), HttpGet]
@@ -85,35 +130,36 @@ namespace MvcMovie.Controllers
         [ValidateAntiForgeryToken]
         public IActionResult Create(MovieViewModel model)
         {
-            if (ModelState.IsValid)
+            if (!ModelState.IsValid)
             {
-                if (_movieService.CheckIfExists(model.Id) == false)
-                {
-                    if (model.Description == null)
+                ViewData["fail"] = "Wrong Input";
 
-                        model.Description = "N/A";
-
-
-                    if (model.MovieTypeId == null)
-
-                        _movieService.Add(new Movie(model.Id, model.Title, model.Description, 10));
-                    else
-                    {
-                        _movieService.Add(new Movie(model.Id, model.Title, model.Description, (int)model.MovieTypeId));
-                    }
-                }
-                else
-                    ViewData["fail"] = "Id exists, please reenter id and movie title";
-
-                TempData["success"] = "Created successfully";
-
-                return RedirectToAction(nameof(Index));
+                return View(model); 
             }
 
-            ViewData["fail"] = "Wrong Input";
+            if (_movieService.CheckIfExists(model.Id) == false)
+            {
+                if (model.Description == null)
 
-            return View(model);
+                    model.Description = "N/A";
 
+
+                if (model.MovieTypeId == null)
+
+                    _movieService.Add(new Movie(model.Id, model.Title, model.Description, 10));
+
+                else
+                {
+                    _movieService.Add(new Movie(model.Id, model.Title, model.Description, (int)model.MovieTypeId));
+                }
+            }
+            else
+
+                ViewData["fail"] = "Id exists, please reenter id and movie title";
+
+            TempData["success"] = "Created successfully";
+
+            return RedirectToAction(nameof(Index));
         }
 
 
@@ -167,13 +213,16 @@ namespace MvcMovie.Controllers
                 TempData["success"] = "Upadated successfully";
 
                 return RedirectToAction(nameof(Update), new { id = model.Id });
+                
             }
 
             TempData["fail"] = "Wrong Input, model validation failed";
 
             return RedirectToAction(nameof(Update), new { id = model.Id });
 
+
         }
+
 
 
 

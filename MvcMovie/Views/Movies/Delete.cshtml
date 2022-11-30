@@ -6,7 +6,7 @@
 
     <h1 style="text-align: center;"> Delete Movie</h1>
 
-    <form asp-route="Delete_Post" method="post">
+    <form asp-route="Delete_Post" method="post" id="form">
 
         <label for="Id" class="form-label mt-4">Id</label>
 
@@ -63,10 +63,15 @@
         <div class="btn">
 
             <button id="subButton" type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#MyPopUp">Delete from database</button>
+            <button id="AjaxSubButton" type="button" class="btn btn-info btn-danger">Ajax Update</button>
 
         </div>
 
         <br />
+
+        <div id="Status" class="text-dark" style="display: inline;">
+            <small id="Id" class="form-text text-muted">Status code appears here</small>
+        </div>
 
         <h1 style="color:red;"> @ViewData["fail"] </h1>
 
@@ -118,13 +123,40 @@
 
     <script type="text/javascript">
 
-
         $(document).ready(function () {
-            $(".btn").click(function (e) {
+
+            var submitButtonElement = document.getElementById('subButton');
+
+            var ajaxSubmitButtonElement = document.getElementById('AjaxSubButton');
+
+            submitButtonElement.addEventListener('click', function () {
                 $('#MyPopUp').modal('show');
             });
-        });
 
+
+
+            ajaxSubmitButtonElement.addEventListener('click', function () {
+                $.ajax(
+                    {
+                        type: "POST",
+                        url: "@Url.Action("Json_Delete", "Movies")",
+                        data: $('#form').serialize(),
+                        dataType: "json",
+                        success: function (textStatus, xhr) {
+                            $("#Status").html("<h3>Database record was deleted succesfully through Ajax.</h3>");
+                            console.log(xhr.status);
+                        },
+
+                        error: function (xhr, textStatus) {
+                            $("#Status").html("Failed");
+                            console.log(xhr.status);
+                        }
+                    });
+            });
+
+
+
+        });
     </script>
 }
 

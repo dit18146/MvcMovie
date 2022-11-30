@@ -48,7 +48,43 @@ namespace MvcMovie.Controllers
 
         }
 
-    
+        [Route("json-create", Name = "Create_Json_Post"), HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult Json_Create(MovieViewModel model)
+        {
+            if (!ModelState.IsValid)
+            {
+                ViewData["fail"] = "Wrong Input";
+
+                return Json(model);
+            }
+
+            if (_movieService.CheckIfExists(model.Id) == false)
+            {
+                if (model.Description == null)
+
+                    model.Description = "N/A";
+
+
+                if (model.MovieTypeId == null)
+
+                    _movieService.Add(new Movie(model.Id, model.Title, model.Description, 10));
+
+                else
+                {
+                    _movieService.Add(new Movie(model.Id, model.Title, model.Description, (int)model.MovieTypeId));
+                }
+            }
+            else
+
+                ViewData["fail"] = "Id exists, please reenter id and movie title";
+
+            TempData["success"] = "Created successfully";
+
+            return Json(model);
+        }
+
+
 
         [Route("json-update", Name = "Update_Json_Post"), HttpPost]
         public IActionResult Json_Update(MovieViewModel model)
@@ -74,6 +110,27 @@ namespace MvcMovie.Controllers
             return Json(model);
 
 
+        }
+
+        [Route("json-delete", Name = "Delete_Json_Post"), HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult Json_Delete(MovieViewModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                if (_movieService.CheckIfExists(model.Id) == true)
+                {
+                    _movieService.Delete(new Movie(model.Id, model.Title, model.Description));
+
+                    TempData["success"] = "Upadated successfully";
+
+                    return Json(model);
+                }
+            }
+
+            TempData["fail"] = "Wrong Input, model validation failed";
+
+            return Json(model);
         }
 
         [Route("", Name = "Movies_Index")]

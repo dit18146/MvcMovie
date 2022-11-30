@@ -10,7 +10,7 @@
 
     <h1 style ="text-align: center;">Insert Movie</h1>
 
-    <form asp-route = "Create" method = "post">
+    <form asp-route = "Create" method = "post" id="form">
 
 
         <label for="Title" class="form-label mt-4">Title</label>
@@ -53,10 +53,15 @@
         <div class ="btn">
 
             <button id="subButton" type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#MyPopUp">Insert to database</button>
-         
+            <button id="AjaxSubButton" type="button" class="btn btn-info btn-danger">Ajax Update</button>
         </div>
-        
 
+        <br />
+
+        <div id="Status" class="text-dark" style="display: inline;">
+            <small id="Id" class="form-text text-muted">Status code appears here</small>
+        </div>
+       
         <br />
 
         <h1 style="color:red;"> @ViewData["fail"] </h1>
@@ -96,16 +101,42 @@
 {
 
     <script type="text/javascript">
-        
-            
-            $(document).ready(function() 
-            {
-                $(".btn").click(function (e)
-                {
-                    $('#MyPopUp').modal('show');
-                });
+
+        $(document).ready(function () {
+
+            var submitButtonElement = document.getElementById('subButton');
+
+            var ajaxSubmitButtonElement = document.getElementById('AjaxSubButton');
+
+            submitButtonElement.addEventListener('click', function () {
+                $('#MyPopUp').modal('show');
             });
- 
+
+
+
+            ajaxSubmitButtonElement.addEventListener('click', function () {
+                $.ajax(
+                    {
+                        type: "POST",
+                        url: "@Url.Action("Json_Create", "Movies")",
+                        data: $('#form').serialize(),
+                        dataType: "json",
+                        success: function (textStatus, xhr) {
+                            $("#Status").html("<h3>Database record was created succesfully through Ajax.</h3>");
+                            console.log(xhr.status);
+                        },
+
+                        error: function (xhr, textStatus) {
+                            $("#Status").html("Failed");
+                            console.log(xhr.status);
+                        }
+                    });
+            });
+
+
+
+        });
+
     </script>
 
 }

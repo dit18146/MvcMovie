@@ -10,8 +10,6 @@ public interface IMovieTypeService
 
     void Update(MovieType item);
 
-    void ClearDatabase();
-
     bool CheckIfExists(int id);
 
     MovieType? GetById(int? id);

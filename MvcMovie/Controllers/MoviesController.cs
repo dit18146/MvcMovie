@@ -23,9 +23,6 @@ public class MoviesController : Controller
     [Route("json", Name = "Movies_Json_Index")]
     public IActionResult Json_Index()
     {
-
-        _movieTypeService.ClearDatabase();
-
         var model = _movieService.GetCollection();
 
         return Json(model);
@@ -121,8 +118,6 @@ public class MoviesController : Controller
     [Route("Ajax", Name = "Movies_Ajax_Index")]
     public IActionResult Ajax_Index()
     {
-        _movieTypeService.ClearDatabase();
-
         var model = _movieService.GetCollection();
 
         return PartialView(model);
@@ -131,8 +126,6 @@ public class MoviesController : Controller
     [Route("", Name = "Movies_Index")]
     public IActionResult Index()
     {
-        _movieTypeService.ClearDatabase();
-
         var model = _movieService.GetCollection();
 
         //var model = await _movieService.GetCollectionAsync().ConfigureAwait(false);
@@ -153,7 +146,6 @@ public class MoviesController : Controller
     [Route("create", Name = "Create"), HttpGet]
     public IActionResult Create()
     {
-        //_movieTypeService.ClearDatabase();
 
         var model = new MovieViewModel();
 
@@ -298,8 +290,6 @@ public class MoviesController : Controller
     [Route("categories", Name = "Categories_Index")]
     public IActionResult Categories_Index()
     {
-        _movieTypeService.ClearDatabase();
-
         var model = _movieTypeService.GetCollection();
 
         return View(model);

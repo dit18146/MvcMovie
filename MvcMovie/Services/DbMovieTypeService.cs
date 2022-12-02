@@ -5,7 +5,7 @@ namespace MvcMovie.Services;
 
 public class DbMovieTypeService : IMovieTypeService
 {
-    private MovieTypes db = new MovieTypes();
+    //private MovieTypes db = new MovieTypes();
 
     public SQLiteConnection conn = new SQLiteConnection(
         "Data Source= C:\\Users\\papachristouj\\source\\repos\\MvcMovie\\MvcMovie\\App_Data\\movie.db; Version = 3; New = True; Compress = True; ");
@@ -39,40 +39,16 @@ public class DbMovieTypeService : IMovieTypeService
     }
 
 
-    public void ClearDatabase()
-    {
-        db.Items.Clear();
-    }
-
-    public void ReadData()
-    {
-        CreateConnection();
-
-        SQLiteDataReader sqlite_datareader;
-
-        SQLiteCommand sqlite_cmd;
-
-        sqlite_cmd = conn.CreateCommand();
-
-        sqlite_cmd.CommandText = "SELECT * FROM MovieType";
-
-        sqlite_datareader = sqlite_cmd.ExecuteReader();
-
-
-        while (sqlite_datareader.Read())
-            db.Items.Add(new MovieType(sqlite_datareader.GetInt16(0), sqlite_datareader.GetString(1)));
-
-        sqlite_datareader.Close();
-
-        //conn.Close();
-    }
-
+  
+  
 
     public void Update(MovieType item)
     {
         SQLiteDataReader sqlite_datareader;
 
         SQLiteCommand sqlite_cmd;
+
+        MovieTypes db = new MovieTypes();
 
         sqlite_cmd = conn.CreateCommand();
 
@@ -92,7 +68,25 @@ public class DbMovieTypeService : IMovieTypeService
 
     public MovieTypes? GetCollection()
     {
-        ReadData();
+        CreateConnection();
+
+        MovieTypes db = new MovieTypes();
+
+        SQLiteDataReader sqlite_datareader;
+
+        SQLiteCommand sqlite_cmd;
+
+        sqlite_cmd = conn.CreateCommand();
+
+        sqlite_cmd.CommandText = "SELECT * FROM MovieType";
+
+        sqlite_datareader = sqlite_cmd.ExecuteReader();
+
+
+        while (sqlite_datareader.Read())
+            db.Items.Add(new MovieType(sqlite_datareader.GetInt16(0), sqlite_datareader.GetString(1)));
+
+        sqlite_datareader.Close();
 
         return db;
     }
@@ -138,6 +132,8 @@ public class DbMovieTypeService : IMovieTypeService
         SQLiteDataReader sqlite_datareader;
 
         SQLiteCommand sqlite_cmd;
+
+        MovieTypes db = new MovieTypes();
 
         sqlite_cmd = conn.CreateCommand();
 

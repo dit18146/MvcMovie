@@ -137,7 +137,21 @@ namespace MvcMovie.Controllers
             return Json(model);
         }
 
-        [Route("", Name = "Movies_Index")]
+        [Route("Ajax", Name = "Movies_Index")]
+        public IActionResult Ajax_Index()
+        {
+
+            _movieService.ClearDatabase();
+
+            _movieTypeService.ClearDatabase();
+
+            var model = _movieService.GetCollection();
+
+
+            return PartialView(model);
+        }
+
+        [Route("", Name = "Movies_Ajax_Index")]
         public IActionResult Index()
         {
             /*_movieService.Update(new Movie(2, "rocky"));
@@ -159,10 +173,12 @@ namespace MvcMovie.Controllers
             _movieTypeService.ClearDatabase();
 
             var model = _movieService.GetCollection();
-            
+
 
             return View(model);
         }
+
+       
 
         [Route("detail/{id:int?}", Name = "Movies_Details")] //naming is important        
         public IActionResult Details(int? id)

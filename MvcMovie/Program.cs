@@ -7,7 +7,9 @@ var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddSingleton<ISqlHelper, SqlHelper>();
 
-builder.Services.AddSingleton<IMovieService, DbMovieService>();
+//builder.Services.AddSingleton<IMovieService, DbMovieService>();
+
+builder.Services.AddSingleton<IMovieService, DapperMovieService>();
 
 builder.Services.AddSingleton<IMovieTypeService, DbMovieTypeService>();
 

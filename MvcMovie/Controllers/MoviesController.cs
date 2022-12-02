@@ -148,9 +148,9 @@ public class MoviesController : Controller
         _movieService.Update(item2);*/
 
 
-        _movieService.ClearDatabase();
+        //_movieService.ClearDatabase();
 
-        _movieTypeService.ClearDatabase();
+        //_movieTypeService.ClearDatabase();
 
         var model = _movieService.GetCollection();
 

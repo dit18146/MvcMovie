@@ -291,3 +291,5 @@ C:\Users\papachristouj\source\repos\MvcMovie\MvcMovie\obj\Debug\net7.0\refint\Mv
 C:\Users\papachristouj\source\repos\MvcMovie\MvcMovie\obj\Debug\net7.0\MvcMovie.pdb
 C:\Users\papachristouj\source\repos\MvcMovie\MvcMovie\obj\Debug\net7.0\MvcMovie.genruntimeconfig.cache
 C:\Users\papachristouj\source\repos\MvcMovie\MvcMovie\obj\Debug\net7.0\ref\MvcMovie.dll
+C:\Users\papachristouj\source\repos\MvcMovie\MvcMovie\bin\Debug\net7.0\CSharpFunctionalExtensions.dll
+C:\Users\papachristouj\source\repos\MvcMovie\MvcMovie\bin\Debug\net7.0\Dapper.dll

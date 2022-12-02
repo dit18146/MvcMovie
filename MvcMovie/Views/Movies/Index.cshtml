@@ -51,6 +51,11 @@
     
 </div>
 
+<div id="result_partial_view">
+
+
+</div>
+
 @section Scripts
 {
     <script type="text/javascript">
@@ -72,7 +77,7 @@
                             for(var i=0; i<response.items.length; i++){
 
                                 trHTML += '<tr class="table-secondary text-secondary"> <td>' + response.items[i]['id'] + '</td> <td>' + response.items[i]['title'] + '</td> <td>' + response.items[i]['description'] + '</td> <td>' + response.items[i]['name'] + '</td> </tr>';
-                            console.log(i);
+                                console.log(i);
                             
                             }
                             console.log(response.items);

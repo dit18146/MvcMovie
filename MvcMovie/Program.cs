@@ -3,11 +3,15 @@ using Microsoft.Extensions.DependencyInjection;
 using MvcMovie.Data;
 using MvcMovie.Services;
 
+
 var builder = WebApplication.CreateBuilder(args);
 //builder.Services.AddDbContext<MvcMovieContext>(options =>
 //options.UseSqlServer(builder.Configuration.GetConnectionString("MvcMovieContext") ?? throw new InvalidOperationException("Connection string 'MvcMovieContext' not found.")));
 
-//builder.Services.AddSingleton<IMovieService, MemoryMovieService>();   //When IMovieService is used an instance of MemoryMovieService is created 
+//builder.Services.AddSingleton<IMovieService, MemoryMovieService>();   //When IMovieService is used an instance of MemoryMovieService is created
+//
+
+builder.Services.AddSingleton<ISqlHelper, SqlHelper>();
 
 builder.Services.AddSingleton<IMovieService, DbMovieService>();
 

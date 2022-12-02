@@ -1,182 +1,164 @@
-﻿using MvcMovie.Models;
-using System.Data.SQLite;
+﻿using System.Data.SQLite;
+using MvcMovie.Models;
 
-namespace MvcMovie.Services
+namespace MvcMovie.Services;
+
+public class DbMovieTypeService : IMovieTypeService
 {
-    public class DbMovieTypeService : IMovieTypeService 
+    private MovieTypes db = new MovieTypes();
+
+    public SQLiteConnection conn = new SQLiteConnection(
+        "Data Source= C:\\Users\\papachristouj\\source\\repos\\MvcMovie\\MvcMovie\\App_Data\\movie.db; Version = 3; New = True; Compress = True; ");
+
+    public SQLiteConnection CreateConnection()
     {
-
-        private MovieTypes db = new MovieTypes();
-
-        public SQLiteConnection conn = new SQLiteConnection("Data Source= C:\\Users\\papachristouj\\source\\repos\\MvcMovie\\MvcMovie\\App_Data\\movie.db; Version = 3; New = True; Compress = True; ");
-
-        public SQLiteConnection CreateConnection()
+        // Open the connection:
+        try
         {
-            // Open the connection:
-            try
-            {
-                conn.Open();
-            }
-            catch (Exception ex)
-            {
-
-            }
-
-            return conn;
-
+            conn.Open();
+        }
+        catch (Exception ex)
+        {
         }
 
-        public void Add(MovieType item)
+        return conn;
+    }
+
+    public void Add(MovieType item)
+    {
+        SQLiteDataReader sqlite_datareader;
+
+        SQLiteCommand sqlite_cmd;
+
+        sqlite_cmd = conn.CreateCommand();
+
+        sqlite_cmd.CommandText = "INSERT INTO MovieType(name) VALUES (" + "'" + item.Name + "'" + ") ;";
+
+
+        sqlite_cmd.ExecuteReader();
+    }
+
+
+    public void ClearDatabase()
+    {
+        db.Items.Clear();
+    }
+
+    public void ReadData()
+    {
+        CreateConnection();
+
+        SQLiteDataReader sqlite_datareader;
+
+        SQLiteCommand sqlite_cmd;
+
+        sqlite_cmd = conn.CreateCommand();
+
+        sqlite_cmd.CommandText = "SELECT * FROM MovieType";
+
+        sqlite_datareader = sqlite_cmd.ExecuteReader();
+
+
+        while (sqlite_datareader.Read())
+            db.Items.Add(new MovieType(sqlite_datareader.GetInt16(0), sqlite_datareader.GetString(1)));
+
+        sqlite_datareader.Close();
+
+        //conn.Close();
+    }
+
+
+    public void Update(MovieType item)
+    {
+        SQLiteDataReader sqlite_datareader;
+
+        SQLiteCommand sqlite_cmd;
+
+        sqlite_cmd = conn.CreateCommand();
+
+        sqlite_cmd.CommandText =
+            "UPDATE MovieType SET name = " + "'" + item.Name + "'" + " WHERE id = " + item.Id + ";";
+
+        sqlite_datareader = sqlite_cmd.ExecuteReader();
+
+
+        while (sqlite_datareader.Read())
+            db.Items.Add(new MovieType(sqlite_datareader.GetInt16(0), sqlite_datareader.GetString(1)));
+
+        sqlite_datareader.Close();
+
+        //conn.Close();
+    }
+
+    public MovieTypes? GetCollection()
+    {
+        ReadData();
+
+        return db;
+    }
+
+    public bool CheckIfExists(int id)
+    {
+        CreateConnection();
+
+        SQLiteDataReader sqlite_datareader;
+
+        SQLiteCommand sqlite_cmd;
+
+        sqlite_cmd = conn.CreateCommand();
+
+        sqlite_cmd.CommandText = "SELECT id FROM MovieType WHERE id = " + id;
+
+        sqlite_datareader = sqlite_cmd.ExecuteReader();
+
+        if (sqlite_datareader.HasRows)
         {
-            SQLiteDataReader sqlite_datareader;
-
-            SQLiteCommand sqlite_cmd;
-
-            sqlite_cmd = conn.CreateCommand();
-
-            sqlite_cmd.CommandText = "INSERT INTO MovieType(name) VALUES (" + "'" + item.Name + "'" +") ;";
-
-
-            sqlite_cmd.ExecuteReader();
-        }
-
-       
-        public void ClearDatabase()
-        {
-            db.Items.Clear();
-        }
-
-        public void ReadData()
-        {
-            CreateConnection();
-
-            SQLiteDataReader sqlite_datareader;
-
-            SQLiteCommand sqlite_cmd;
-
-            sqlite_cmd = conn.CreateCommand();
-
-            sqlite_cmd.CommandText = "SELECT * FROM MovieType";
-
-            sqlite_datareader = sqlite_cmd.ExecuteReader();
-
-
-            while (sqlite_datareader.Read())
-            {
-
-
-                db.Items.Add(new MovieType(sqlite_datareader.GetInt16(0), sqlite_datareader.GetString(1)));
-
-
-            }
+            //conn.Close();
 
             sqlite_datareader.Close();
 
-            //conn.Close();
+            return true;
         }
 
+        //conn.Close();
 
-        public void Update(MovieType item)
-        {
-            SQLiteDataReader sqlite_datareader;
+        sqlite_datareader.Close();
 
-            SQLiteCommand sqlite_cmd;
+        return false;
+    }
 
-            sqlite_cmd = conn.CreateCommand();
+    public MovieType? GetById(int? id)
+    {
+        if (id == null)
 
-            sqlite_cmd.CommandText = "UPDATE MovieType SET name = " + "'" + item.Name + "'" + " WHERE id = " + item.Id + ";";
+            id = 1;
 
-            sqlite_datareader = sqlite_cmd.ExecuteReader();
+        CreateConnection();
 
+        SQLiteDataReader sqlite_datareader;
 
-            while (sqlite_datareader.Read())
-            {
-                db.Items.Add(new MovieType(sqlite_datareader.GetInt16(0), sqlite_datareader.GetString(1)));
+        SQLiteCommand sqlite_cmd;
 
-            }
+        sqlite_cmd = conn.CreateCommand();
 
-            sqlite_datareader.Close();
-
-            //conn.Close();
-
-        }
-
-        public MovieTypes? GetCollection()
-        {
-            ReadData();
-
-            return db;
-        }
-
-        public bool CheckIfExists(int id)
-        {
-            CreateConnection();
-
-            SQLiteDataReader sqlite_datareader;
-
-            SQLiteCommand sqlite_cmd;
-
-            sqlite_cmd = conn.CreateCommand();
-
-            sqlite_cmd.CommandText = "SELECT id FROM MovieType WHERE id = " + id;
-
-            sqlite_datareader = sqlite_cmd.ExecuteReader();
-
-            if (sqlite_datareader.HasRows)
-            {
-                //conn.Close();
-
-                sqlite_datareader.Close();
-
-                return true;
-            }
-
-            else
-            {
-                //conn.Close();
-
-                sqlite_datareader.Close();
-
-                return false;
-            }
-        }
-
-        public MovieType? GetById(int? id)
-        {
-            if (id == null)
-
-                id = 1;
-
-            CreateConnection();
-
-            SQLiteDataReader sqlite_datareader;
-
-            SQLiteCommand sqlite_cmd;
-
-            sqlite_cmd = conn.CreateCommand();
-
-            sqlite_cmd.CommandText = "SELECT * FROM MovieType WHERE id = " + id;
+        sqlite_cmd.CommandText = "SELECT * FROM MovieType WHERE id = " + id;
 
 
-            sqlite_datareader = sqlite_cmd.ExecuteReader();
+        sqlite_datareader = sqlite_cmd.ExecuteReader();
 
-            //TODO: Handle Not Found
-            while (sqlite_datareader.Read())
-            {
-                db.Items.Add(new MovieType(sqlite_datareader.GetInt16(0), sqlite_datareader.GetString(1)));
+        //TODO: Handle Not Found
+        while (sqlite_datareader.Read())
+            db.Items.Add(new MovieType(sqlite_datareader.GetInt16(0), sqlite_datareader.GetString(1)));
 
-            }
+        sqlite_datareader.Close();
 
-            sqlite_datareader.Close();
+        //conn.Close();
 
-            //conn.Close();
+        return db.Items.FirstOrDefault(x => x.Id == id);
+    }
 
-            return db.Items.FirstOrDefault(x => x.Id == id);
-        }
-
-        public void CloseConnection()
-        {
-            conn.Close();
-        }
+    public void CloseConnection()
+    {
+        conn.Close();
     }
 }

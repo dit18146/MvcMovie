@@ -1,7 +1,6 @@
 using System.Data;
 using CSharpFunctionalExtensions;
 
-
 namespace MvcMovie.Services;
 
 public interface ISqlHelper

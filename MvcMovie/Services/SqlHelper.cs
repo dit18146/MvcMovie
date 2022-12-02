@@ -3,7 +3,6 @@ using System.Data.SqlClient;
 using CSharpFunctionalExtensions;
 using Dapper;
 
-
 namespace MvcMovie.Services;
 
 public class SqlHelper : ISqlHelper

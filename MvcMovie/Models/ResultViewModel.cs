@@ -1,7 +1,6 @@
-﻿namespace MvcMovie.Models
+﻿namespace MvcMovie.Models;
+
+public class ResultViewModel
 {
-    public class ResultViewModel
-    {
-        public string Message { get; set; } = string.Empty;
-    }
+    public string Message { get; set; } = string.Empty;
 }

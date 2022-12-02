@@ -1,15 +1,14 @@
-﻿namespace MvcMovie.Models
+﻿namespace MvcMovie.Models;
+
+public class MovieType
 {
-    public class MovieType
+    public int Id { get; set; }
+
+    public string? Name { get; set; }
+
+    public MovieType(int id, string? name)
     {
-        public int Id { get; set;}
-
-        public string? Name { get; set; }
-
-        public MovieType(int id, string? name)
-        {
-            Id = id;
-            Name = name;
-        }
+        Id = id;
+        Name = name;
     }
 }

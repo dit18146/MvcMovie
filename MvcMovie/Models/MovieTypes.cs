@@ -1,7 +1,6 @@
-﻿namespace MvcMovie.Models
+﻿namespace MvcMovie.Models;
+
+public class MovieTypes
 {
-    public class MovieTypes
-    {
-        public List<MovieType> Items { get; set; } = new List<MovieType>();
-    }
+    public List<MovieType> Items { get; set; } = new List<MovieType>();
 }

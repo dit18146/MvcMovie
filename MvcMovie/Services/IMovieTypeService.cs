@@ -1,23 +1,20 @@
 ﻿using MvcMovie.Models;
 
-namespace MvcMovie.Services
+namespace MvcMovie.Services;
+
+public interface IMovieTypeService
 {
-    public interface IMovieTypeService
-    {
-        MovieTypes? GetCollection();
+    MovieTypes? GetCollection();
 
-        void Add(MovieType item);
+    void Add(MovieType item);
 
-        void Update(MovieType item);
+    void Update(MovieType item);
 
-        void ClearDatabase();
+    void ClearDatabase();
 
-        bool CheckIfExists(int id);
+    bool CheckIfExists(int id);
 
-        MovieType? GetById(int? id);
+    MovieType? GetById(int? id);
 
-        void CloseConnection();
-
-
-    }
+    void CloseConnection();
 }

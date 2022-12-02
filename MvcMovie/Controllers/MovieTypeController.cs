@@ -1,15 +1,9 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 
-namespace MvcMovie.Controllers
+namespace MvcMovie.Controllers;
+
+public class MovieTypeController : Controller
 {
-    public class MovieTypeController : Controller
-    {
-
-        [Route("categories")]
-
-        public IActionResult Index()
-        {
-            return View();
-        }
-    }
+    [Route("categories")]
+    public IActionResult Index() => View();
 }

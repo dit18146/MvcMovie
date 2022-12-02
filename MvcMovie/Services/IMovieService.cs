@@ -1,38 +1,34 @@
-﻿using Microsoft.Data.SqlClient;
-using MvcMovie.Models;
+﻿using MvcMovie.Models;
 
-namespace MvcMovie.Services
+namespace MvcMovie.Services;
+
+public interface IMovieService
 {
-    public interface IMovieService
-    {
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="id"></param>
-        /// <returns></returns>
-        Movie? GetById(int? id);
+    /// <summary>
+    /// </summary>
+    /// <param name="id"></param>
+    /// <returns></returns>
+    Movie? GetById(int? id);
 
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <returns></returns>
-        Movies? GetCollection();
+    /// <summary>
+    /// </summary>
+    /// <returns></returns>
+    Movies? GetCollection();
 
-        void Add(Movie item);
+    void Add(Movie item);
 
-        void Update(Movie item);
+    void Update(Movie item);
 
-        void Delete(Movie item);
+    void Delete(Movie item);
 
-        bool CheckIfExists(int id);
+    bool CheckIfExists(int id);
 
 
-        //void Add_Category(Movie item);
+    //void Add_Category(Movie item);
 
-        //void Update_Category(Movie item);
+    //void Update_Category(Movie item);
 
-        void ClearDatabase();
+    void ClearDatabase();
 
-        void CloseConnection();
-    }
+    void CloseConnection();
 }

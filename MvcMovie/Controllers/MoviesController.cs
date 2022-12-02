@@ -129,21 +129,8 @@ public class MoviesController : Controller
     }
 
     [Route("", Name = "Movies_Index")]
-    public async Task<IActionResult> Index()
+    public IActionResult Index()
     {
-        /*_movieService.Update(new Movie(2, "rocky"));
-
-        _movieService.Delete(new Movie(5, "james bond"));
-
-        _movieService.Add(new Movie(5, "james bond"));*/
-
-        /*var model = _movieService.GetCollection();
-        var item = new Movie(50, "The hunt for the red October");
-        var item2 = new Movie(2, "James Bond");
-        _movieService.Add(item);
-        _movieService.Delete(_movieService.GetById(1));
-        _movieService.Update(item2);*/
-
         _movieTypeService.ClearDatabase();
 
         var model = _movieService.GetCollection();

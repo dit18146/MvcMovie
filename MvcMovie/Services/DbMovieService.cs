@@ -5,9 +5,9 @@ namespace MvcMovie.Services;
 
 public class DbMovieService : IMovieService
 {
-    private Movies db = new Movies();
+    private readonly Movies _db = new Movies();
 
-    public SQLiteConnection conn = new SQLiteConnection(
+    private readonly SQLiteConnection _conn = new SQLiteConnection(
         "Data Source= C:\\Users\\papachristouj\\source\\repos\\MvcMovie\\MvcMovie\\App_Data\\movie.db; Version = 3; New = True; Compress = True; ");
 
 
@@ -16,36 +16,32 @@ public class DbMovieService : IMovieService
         // Open the connection:
         try
         {
-            conn.Open();
+            _conn.Open();
         }
         catch (Exception ex)
         {
         }
 
-        return conn;
+        return _conn;
     }
 
     public void ReadData()
     {
         CreateConnection();
 
-        SQLiteDataReader sqlite_datareader;
+        var sqliteCmd = _conn.CreateCommand();
 
-        SQLiteCommand sqlite_cmd;
-
-        sqlite_cmd = conn.CreateCommand();
-
-        sqlite_cmd.CommandText =
+        sqliteCmd.CommandText =
             "SELECT Movie.Id, Title, Description, Name FROM Movie, MovieType WHERE MovieType.Id = Movie.MovieTypeId";
 
-        sqlite_datareader = sqlite_cmd.ExecuteReader();
+        var sqliteDataReader = sqliteCmd.ExecuteReader();
 
 
-        while (sqlite_datareader.Read())
-            db.Items.Add(new Movie(sqlite_datareader.GetInt16(0), sqlite_datareader.GetString(1),
-                sqlite_datareader.GetString(2), sqlite_datareader.GetString(3)));
+        while (sqliteDataReader.Read())
+            _db.Items.Add(new Movie(sqliteDataReader.GetInt16(0), sqliteDataReader.GetString(1),
+                sqliteDataReader.GetString(2), sqliteDataReader.GetString(3)));
 
-        sqlite_datareader.Close();
+        sqliteDataReader.Close();
 
         //conn.Close();
     }
@@ -53,143 +49,109 @@ public class DbMovieService : IMovieService
 
     public void Add(Movie item)
     {
-        //CreateConnection();
+        var sqliteCmd = _conn.CreateCommand();
 
-        SQLiteDataReader sqlite_datareader;
+        sqliteCmd.CommandText = "INSERT INTO movie(title, description, MovieTypeId) VALUES (" + "'" + item.Title +
+                                "'" + "," + "' " + item.Description + "'" + ", " + item.MovieTypeId + ") ;";
 
-        SQLiteCommand sqlite_cmd;
-
-        sqlite_cmd = conn.CreateCommand();
-
-        sqlite_cmd.CommandText = "INSERT INTO movie(title, description, MovieTypeId) VALUES (" + "'" + item.Title +
-                                 "'" + "," + "' " + item.Description + "'" + ", " + item.MovieTypeId + ") ;";
-
-
-        sqlite_cmd.ExecuteReader();
-
-        //conn.Close();
+        sqliteCmd.ExecuteReader();
     }
 
 
     public void Delete(Movie item)
     {
-        //CreateConnection();
+        var sqliteCmd = _conn.CreateCommand();
 
-        SQLiteDataReader sqlite_datareader;
+        sqliteCmd.CommandText = "DELETE FROM movie WHERE id = " + item.Id;
 
-        SQLiteCommand sqlite_cmd;
+        var sqliteDataReader = sqliteCmd.ExecuteReader();
 
-        sqlite_cmd = conn.CreateCommand();
+        while (sqliteDataReader.Read())
+            _db.Items.Add(new Movie(sqliteDataReader.GetInt16(0), sqliteDataReader.GetString(1),
+                sqliteDataReader.GetString(2)));
 
-        sqlite_cmd.CommandText = "DELETE FROM movie WHERE id = " + item.Id;
-
-
-        sqlite_datareader = sqlite_cmd.ExecuteReader();
-
-        while (sqlite_datareader.Read())
-            db.Items.Add(new Movie(sqlite_datareader.GetInt16(0), sqlite_datareader.GetString(1),
-                sqlite_datareader.GetString(2)));
-
-        sqlite_datareader.Close();
-
-        //conn.Close();
+        sqliteDataReader.Close();
     }
 
     public Movie? GetById(int? id)
     {
         if (id == null)
-
             id = 18;
 
         CreateConnection();
 
-        SQLiteDataReader sqlite_datareader;
+        var sqliteCmd = _conn.CreateCommand();
 
-        SQLiteCommand sqlite_cmd;
-
-        sqlite_cmd = conn.CreateCommand();
-
-        sqlite_cmd.CommandText = "SELECT * FROM Movie WHERE id = " + id;
+        sqliteCmd.CommandText = "SELECT * FROM Movie WHERE id = " + id;
 
 
-        sqlite_datareader = sqlite_cmd.ExecuteReader();
+        var sqliteDataReader = sqliteCmd.ExecuteReader();
 
-        db.Items.Clear();
+        _db.Items.Clear();
 
         //TODO: Handle Not Found
-        while (sqlite_datareader.Read())
-            db.Items.Add(new Movie(sqlite_datareader.GetInt16(0), sqlite_datareader.GetString(1),
-                sqlite_datareader.GetString(2), sqlite_datareader.GetInt32(3)));
+        while (sqliteDataReader.Read())
+            _db.Items.Add(new Movie(sqliteDataReader.GetInt16(0), sqliteDataReader.GetString(1),
+                sqliteDataReader.GetString(2), sqliteDataReader.GetInt32(3)));
 
-        sqlite_datareader.Close();
+        sqliteDataReader.Close();
 
-        return db.Items.FirstOrDefault(x => x.Id == id);
+        return _db.Items.FirstOrDefault(x => x.Id == id);
     }
 
     public void Update(Movie item)
     {
-        //CreateConnection();
+        var sqliteCmd = _conn.CreateCommand();
 
-        SQLiteDataReader sqlite_datareader;
+        sqliteCmd.CommandText = "UPDATE movie SET title = " + "'" + item.Title + "'" + ", description = " + "'" +
+                                item.Description + "'" + "," + "movieTypeId = " + "'" + item.MovieTypeId + "'" +
+                                "  WHERE id = " + item.Id + ";";
 
-        SQLiteCommand sqlite_cmd;
+        var sqliteDataReader = sqliteCmd.ExecuteReader();
 
-        sqlite_cmd = conn.CreateCommand();
+        while (sqliteDataReader.Read())
+            _db.Items.Add(new Movie(sqliteDataReader.GetInt16(0), sqliteDataReader.GetString(1),
+                sqliteDataReader.GetString(2)));
 
-        sqlite_cmd.CommandText = "UPDATE movie SET title = " + "'" + item.Title + "'" + ", description = " + "'" +
-                                 item.Description + "'" + "," + "movieTypeId = " + "'" + item.MovieTypeId + "'" +
-                                 "  WHERE id = " + item.Id + ";";
-
-        sqlite_datareader = sqlite_cmd.ExecuteReader();
-
-
-        while (sqlite_datareader.Read())
-            db.Items.Add(new Movie(sqlite_datareader.GetInt16(0), sqlite_datareader.GetString(1),
-                sqlite_datareader.GetString(2)));
-
-        sqlite_datareader.Close();
+        sqliteDataReader.Close();
     }
 
     public Movies? GetCollection()
     {
         ReadData();
 
-        return db;
+        return _db;
     }
 
     public bool CheckIfExists(int id)
     {
         CreateConnection();
 
-        SQLiteDataReader sqlite_datareader;
+        var sqliteCmd = _conn.CreateCommand();
 
-        SQLiteCommand sqlite_cmd;
+        sqliteCmd.CommandText = "SELECT id FROM movie WHERE id = " + id;
 
-        sqlite_cmd = conn.CreateCommand();
+        var sqliteDataReader = sqliteCmd.ExecuteReader();
 
-        sqlite_cmd.CommandText = "SELECT id FROM movie WHERE id = " + id;
-
-        sqlite_datareader = sqlite_cmd.ExecuteReader();
-
-        if (sqlite_datareader.HasRows)
+        if (sqliteDataReader.HasRows)
         {
-            sqlite_datareader.Close();
+            sqliteDataReader.Close();
 
             return true;
         }
 
-        sqlite_datareader.Close();
+        sqliteDataReader.Close();
 
         return false;
     }
 
     public void ClearDatabase()
     {
-        db.Items.Clear();
+        _db.Items.Clear();
     }
 
     public void CloseConnection()
     {
-        conn.Close();
+        _conn.Close();
     }
 }

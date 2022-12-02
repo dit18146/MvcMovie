@@ -345,3 +345,5 @@ src/Pindus.Web/Pindus.Web.Site.Mobile/wwwroot/content/app/slip-bundle.min.js
 src/Pindus.Web/Pindus.Web.Shop/.vscode/tasks.json
 src/Pindus.Web/Pindus.Web.Shop/.vscode/launch.json
 src/Pindus.Web/Pindus.Web.Site.Mobile/ClientApp/test/cypress/snapshots/
+.vs/MvcMovie/v17/.suo
+*.vsidx

@@ -26,7 +26,6 @@ public class DbMovieTypeService : IMovieTypeService
 
     public void Add(MovieType item)
     {
-        SQLiteDataReader sqlite_datareader;
 
         SQLiteCommand sqlite_cmd;
 
@@ -63,7 +62,6 @@ public class DbMovieTypeService : IMovieTypeService
 
         sqlite_datareader.Close();
 
-        //conn.Close();
     }
 
     public MovieTypes? GetCollection()
@@ -107,14 +105,11 @@ public class DbMovieTypeService : IMovieTypeService
 
         if (sqlite_datareader.HasRows)
         {
-            //conn.Close();
 
             sqlite_datareader.Close();
 
             return true;
         }
-
-        //conn.Close();
 
         sqlite_datareader.Close();
 
@@ -142,13 +137,10 @@ public class DbMovieTypeService : IMovieTypeService
 
         sqlite_datareader = sqlite_cmd.ExecuteReader();
 
-        //TODO: Handle Not Found
         while (sqlite_datareader.Read())
             db.Items.Add(new MovieType(sqlite_datareader.GetInt16(0), sqlite_datareader.GetString(1)));
 
         sqlite_datareader.Close();
-
-        //conn.Close();
 
         return db.Items.FirstOrDefault(x => x.Id == id);
     }

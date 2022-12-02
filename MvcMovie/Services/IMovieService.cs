@@ -4,20 +4,10 @@ namespace MvcMovie.Services;
 
 public interface IMovieService
 {
-    /// <summary>
-    /// </summary>
-    /// <param name="id"></param>
-    /// <returns></returns>
     Movie? GetById(int? id);
 
-    /// <summary>
-    /// </summary>
-    /// <returns></returns>
     Movies? GetCollection();
 
-    /// <summary>
-    /// </summary>
-    /// <returns></returns>
     Task<Movies?> GetCollectionAsync();
 
 

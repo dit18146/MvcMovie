@@ -28,7 +28,7 @@ public class MoviesController : Controller
         return Json(model);
     }
 
-    [Route("json-detail/{id:int?}", Name = "Movies_Json_Details")] //naming is important        
+    [Route("json-detail/{id:int?}", Name = "Movies_Json_Details")]        
     public IActionResult Json_Details(int? id)
     {
         var model = _movieService.GetById(id);
@@ -252,7 +252,7 @@ public class MoviesController : Controller
         if (id != null)
         {
             if (_movieService.CheckIfExists((int)id))
-                // var model = _movieService.GetById(id);
+                
                 return View(model);
         }
 

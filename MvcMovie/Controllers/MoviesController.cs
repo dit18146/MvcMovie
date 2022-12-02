@@ -23,7 +23,6 @@ public class MoviesController : Controller
     [Route("json", Name = "Movies_Json_Index")]
     public IActionResult Json_Index()
     {
-        _movieService.ClearDatabase();
 
         _movieTypeService.ClearDatabase();
 
@@ -122,8 +121,6 @@ public class MoviesController : Controller
     [Route("Ajax", Name = "Movies_Ajax_Index")]
     public IActionResult Ajax_Index()
     {
-        _movieService.ClearDatabase();
-
         _movieTypeService.ClearDatabase();
 
         var model = _movieService.GetCollection();
@@ -147,12 +144,11 @@ public class MoviesController : Controller
         _movieService.Delete(_movieService.GetById(1));
         _movieService.Update(item2);*/
 
+        _movieTypeService.ClearDatabase();
 
-        //_movieService.ClearDatabase();
+        var model = _movieService.GetCollection();
 
-        //_movieTypeService.ClearDatabase();
-
-        var model = await _movieService.GetCollectionAsync().ConfigureAwait(false);
+        //var model = await _movieService.GetCollectionAsync().ConfigureAwait(false);
 
 
         return View(model);
@@ -170,7 +166,7 @@ public class MoviesController : Controller
     [Route("create", Name = "Create"), HttpGet]
     public IActionResult Create()
     {
-        _movieTypeService.ClearDatabase();
+        //_movieTypeService.ClearDatabase();
 
         var model = new MovieViewModel();
 
@@ -220,8 +216,6 @@ public class MoviesController : Controller
     [Route("update/{id:int?}", Name = "Update_Get"), HttpGet]
     public IActionResult Update(int? id)
     {
-        _movieTypeService.ClearDatabase();
-
         var model = _movieService.GetById(id);
 
         model.Categories = _movieTypeService.GetCollection();
@@ -272,8 +266,6 @@ public class MoviesController : Controller
     [Route("delete/{id:int?}", Name = "Delete_Get"), HttpGet]
     public IActionResult Delete(int? id)
     {
-        _movieTypeService.ClearDatabase();
-
         var model = _movieService.GetById(id);
 
         model.Categories = _movieTypeService.GetCollection();

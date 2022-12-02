@@ -34,7 +34,6 @@ public interface IMovieService
 
     //void Update_Category(Movie item);
 
-    void ClearDatabase();
+    
 
-    void CloseConnection();
 }

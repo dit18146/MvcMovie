@@ -5,7 +5,7 @@ namespace MvcMovie.Services;
 
 public class DbMovieService : IMovieService
 {
-    private readonly Movies _db = new Movies();
+    //private readonly Movies _db = new Movies();
 
     private readonly SQLiteConnection _conn = new SQLiteConnection(
         "Data Source= C:\\Users\\papachristouj\\source\\repos\\MvcMovie\\MvcMovie\\App_Data\\movie.db; Version = 3; New = True; Compress = True; ");
@@ -28,6 +28,8 @@ public class DbMovieService : IMovieService
     public void ReadData()
     {
         CreateConnection();
+
+        Movies _db = new Movies();
 
         var sqliteCmd = _conn.CreateCommand();
 
@@ -69,6 +71,8 @@ public class DbMovieService : IMovieService
 
         var sqliteDataReader = sqliteCmd.ExecuteReader();
 
+        Movies _db = new Movies();
+
         while (sqliteDataReader.Read())
             _db.Items.Add(new Movie(sqliteDataReader.GetInt16(0), sqliteDataReader.GetString(1),
                 sqliteDataReader.GetString(2)));
@@ -90,6 +94,8 @@ public class DbMovieService : IMovieService
 
         var sqliteDataReader = sqliteCmd.ExecuteReader();
 
+        Movies _db = new Movies();
+
         _db.Items.Clear();
 
         //TODO: Handle Not Found
@@ -106,6 +112,8 @@ public class DbMovieService : IMovieService
     {
         var sqliteCmd = _conn.CreateCommand();
 
+        Movies _db = new Movies();
+
         sqliteCmd.CommandText = "UPDATE movie SET title = " + "'" + item.Title + "'" + ", description = " + "'" +
                                 item.Description + "'" + "," + "movieTypeId = " + "'" + item.MovieTypeId + "'" +
                                 "  WHERE id = " + item.Id + ";";
@@ -121,7 +129,24 @@ public class DbMovieService : IMovieService
 
     public Movies? GetCollection()
     {
-        ReadData();
+        CreateConnection();
+
+        Movies _db = new Movies();
+
+        var sqliteCmd = _conn.CreateCommand();
+
+        sqliteCmd.CommandText =
+            "SELECT Movie.Id, Title, Description, Name FROM Movie, MovieType WHERE MovieType.Id = Movie.MovieTypeId";
+
+        var sqliteDataReader = sqliteCmd.ExecuteReader();
+
+
+        while (sqliteDataReader.Read())
+            _db.Items.Add(new Movie(sqliteDataReader.GetInt16(0), sqliteDataReader.GetString(1),
+                sqliteDataReader.GetString(2), sqliteDataReader.GetString(3)));
+
+        sqliteDataReader.Close();
+
 
         return _db;
     }
@@ -148,10 +173,7 @@ public class DbMovieService : IMovieService
         return false;
     }
 
-    public void ClearDatabase()
-    {
-        _db.Items.Clear();
-    }
+   
 
     public void CloseConnection()
     {

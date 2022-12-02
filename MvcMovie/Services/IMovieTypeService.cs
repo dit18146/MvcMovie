@@ -16,5 +16,4 @@ public interface IMovieTypeService
 
     MovieType? GetById(int? id);
 
-    void CloseConnection();
 }

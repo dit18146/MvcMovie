@@ -128,7 +128,6 @@ public class MoviesController : Controller
 
         var model = _movieService.GetCollection();
 
-
         return PartialView(model);
     }
 

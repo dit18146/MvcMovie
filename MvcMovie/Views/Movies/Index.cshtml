@@ -42,6 +42,7 @@
 
 <div class = "btns">
             <button id="AjaxSubButton" type="button" class="btn btn-info btn-danger">View Records with Ajax</button>
+            <button id="AjaxGetButton" type="button" class="btn btn-primary btn-primary">View Records with Partial View and Ajax</button>
 </div>
 
 <br />
@@ -62,6 +63,8 @@
 
         $(document).ready(function () {
             var ajaxSubmitButtonElement = document.getElementById('AjaxSubButton');
+
+            var ajaxGetButtonElement = document.getElementById('AjaxGetButton');
 
             ajaxSubmitButtonElement.addEventListener('click', function () {
                 
@@ -93,6 +96,26 @@
                             console.log(xhr.status);
                         }
                 });
+            });
+
+            ajaxGetButtonElement.addEventListener('click', function () {
+
+                $.ajax({
+                    type: "GET",
+                    url: "@Url.Action("Ajax_Index", "Movies")",
+                    dataType: 'html',
+                    success: function (response) {
+                        $('#result_partial_view').html(response);
+                    },
+
+                    error: function (xhr, textStatus) {
+                            $("#Status").html("Failed");
+                            console.log(xhr.status);
+                    }
+
+
+                });
+
             });
         });
 

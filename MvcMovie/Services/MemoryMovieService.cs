@@ -4,7 +4,8 @@ namespace MvcMovie.Services;
 
 public class MemoryMovieService : IMovieService
 {
-    private Movies _db;
+    private readonly Movies _db;
+
     public MemoryMovieService() => _db = CreateDb(50);
 
     public void Add(Movie item)

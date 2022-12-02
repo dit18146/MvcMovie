@@ -2,6 +2,7 @@ using System.Data;
 using System.Data.SqlClient;
 using CSharpFunctionalExtensions;
 using Dapper;
+using Microsoft.Data.Sqlite;
 
 namespace MvcMovie.Services;
 
@@ -375,10 +376,9 @@ public class SqlHelper : ISqlHelper
         if (string.IsNullOrEmpty(connectionString)) throw new ArgumentNullException(nameof(connectionString));
         if (string.IsNullOrEmpty(sql)) throw new ArgumentNullException(nameof(sql));
         if (func == null) throw new ArgumentNullException(nameof(func));
-
         Maybe<T> toReturn;
 
-        var conn = new SqlConnection(connectionString);
+        var conn = new SqliteConnection(connectionString);
 
         try
         {

@@ -8,6 +8,9 @@ public class MemoryMovieService : IMovieService
 
     public MemoryMovieService() => _db = CreateDb(50);
 
+    /// <inheritdoc />
+    public async Task<Movies?> GetCollectionAsync() => throw new NotImplementedException();
+
     public void Add(Movie item)
     {
         _db.Items.Add(item);

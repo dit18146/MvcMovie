@@ -132,7 +132,7 @@ public class MoviesController : Controller
     }
 
     [Route("", Name = "Movies_Index")]
-    public IActionResult Index()
+    public async Task<IActionResult> Index()
     {
         /*_movieService.Update(new Movie(2, "rocky"));
 
@@ -152,7 +152,7 @@ public class MoviesController : Controller
 
         //_movieTypeService.ClearDatabase();
 
-        var model = _movieService.GetCollection();
+        var model = await _movieService.GetCollectionAsync().ConfigureAwait(false);
 
 
         return View(model);

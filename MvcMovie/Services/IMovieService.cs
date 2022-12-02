@@ -15,6 +15,12 @@ public interface IMovieService
     /// <returns></returns>
     Movies? GetCollection();
 
+    /// <summary>
+    /// </summary>
+    /// <returns></returns>
+    Task<Movies?> GetCollectionAsync();
+
+
     void Add(Movie item);
 
     void Update(Movie item);

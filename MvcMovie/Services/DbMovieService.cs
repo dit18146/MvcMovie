@@ -47,6 +47,9 @@ public class DbMovieService : IMovieService
     }
 
 
+    /// <inheritdoc />
+    public async Task<Movies?> GetCollectionAsync() => throw new NotImplementedException();
+
     public void Add(Movie item)
     {
         var sqliteCmd = _conn.CreateCommand();

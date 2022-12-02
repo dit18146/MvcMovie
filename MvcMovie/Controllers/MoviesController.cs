@@ -119,7 +119,7 @@ public class MoviesController : Controller
         return Json(model);
     }
 
-    [Route("Ajax", Name = "Movies_Index")]
+    [Route("Ajax", Name = "Movies_Ajax_Index")]
     public IActionResult Ajax_Index()
     {
         _movieService.ClearDatabase();
@@ -132,7 +132,7 @@ public class MoviesController : Controller
         return PartialView(model);
     }
 
-    [Route("", Name = "Movies_Ajax_Index")]
+    [Route("", Name = "Movies_Index")]
     public IActionResult Index()
     {
         /*_movieService.Update(new Movie(2, "rocky"));

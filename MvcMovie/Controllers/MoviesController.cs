@@ -34,6 +34,10 @@ namespace MvcMovie.Controllers
         [Route("json", Name = "Movies_Json_Index")]
         public IActionResult Json_Index()
         {
+            _movieService.ClearDatabase();
+
+            _movieTypeService.ClearDatabase();
+
             var model = _movieService.GetCollection();
 
             return Json(model);

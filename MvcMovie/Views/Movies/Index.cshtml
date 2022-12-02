@@ -2,37 +2,94 @@
 
 
 
+<div>
 
-<table class="table table-hover">
-    <tr> 
-        <th>ID</th>
-        <th>Title</th>
-        <th>Description</th>
-        <th> Category </th>
-        <th></th>
-        <th></th>
-    </tr>
-    @foreach(var item in Model.Items)
-    {
-        <tr class="table-secondary text-secondary">
-                <td>@item.Id</td>
 
-                <td>@item.Title</td>
+    <table class="table table-hover" id="table">
+        <tr> 
+            <th>ID</th>
+            <th>Title</th>
+            <th>Description</th>
+            <th> Category </th>
+            <th></th>
+            <th></th>
+        </tr>
+        @foreach(var item in Model.Items)
+        {
+            <tr class="table-secondary text-secondary">
+                    <td>@item.Id</td>
 
-                <td>@item.Description</td>
+                    <td>@item.Title</td>
 
-                <td>@item.Name</td>
+                    <td>@item.Description</td>
+
+                    <td>@item.Name</td>
             
-                <td><a href="@Url.RouteUrl("Movies_Details", new {id = item.Id})">detail1</a></td>
+                    <td><a href="@Url.RouteUrl("Movies_Details", new {id = item.Id})">detail1</a></td>
 
-                <td><a href="@Url.Action("Detail", "Movies", new { id = item.Id})">detail2</a></td>
+                    <td><a href="@Url.Action("Detail", "Movies", new { id = item.Id})">detail2</a></td>
 
-                <td><a asp-controller="Movies" asp-action="Details" asp-route-id="@item.Id"> detail3</a> </td>
+                    <td><a asp-controller="Movies" asp-action="Details" asp-route-id="@item.Id"> detail3</a> </td>
 
-                <td><a href="@Url.Action("Update", "Movies", new {id = item.Id})">Edit</a></td>
+                    <td><a href="@Url.Action("Update", "Movies", new {id = item.Id})">Edit</a></td>
 
-                <td><a href="@Url.Action("Delete", "Movies", new {id = item.Id})">Delete</a></td>
-        </tr>   
-    }
+                    <td><a href="@Url.Action("Delete", "Movies", new {id = item.Id})">Delete</a></td>
+            </tr>   
+        }
   
-</table>
+    </table>
+</div>
+
+<div class = "btns">
+            <button id="AjaxSubButton" type="button" class="btn btn-info btn-danger">View Records with Ajax</button>
+</div>
+
+<br />
+<br />
+
+<div id="result">
+    
+</div>
+
+@section Scripts
+{
+    <script type="text/javascript">
+
+        $(document).ready(function () {
+            var ajaxSubmitButtonElement = document.getElementById('AjaxSubButton');
+
+            ajaxSubmitButtonElement.addEventListener('click', function () {
+                
+                $.ajax({
+                        type: "GET",
+                        url: "@Url.Action("Json_Index", "Movies")",
+                        data: $('#form').serialize(),
+                        dataType: 'json',
+                        success: function (response) {
+                            var trHTML = '';
+                            trHTML += '<table class="table table-hover" id="table_2">';
+                            trHTML += '<tr><th> Id </th> <th> Title </th> <th> Description </th> <th> Category </th> </tr>'
+                            for(var i=0; i<response.items.length; i++){
+
+                                trHTML += '<tr class="table-secondary text-secondary"> <td>' + response.items[i]['id'] + '</td> <td>' + response.items[i]['title'] + '</td> <td>' + response.items[i]['description'] + '</td> <td>' + response.items[i]['name'] + '</td> </tr>';
+                            console.log(i);
+                            
+                            }
+                            console.log(response.items);
+                            trHTML += '</table>';
+                            console.log(trHTML);
+                            $('#result').html(trHTML);
+                            response.items = [];
+                            
+                        },
+
+                        error: function (xhr, textStatus) {
+                            $("#Status").html("Failed");
+                            console.log(xhr.status);
+                        }
+                });
+            });
+        });
+
+    </script>
+}

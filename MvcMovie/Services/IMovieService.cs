@@ -18,12 +18,4 @@ public interface IMovieService
     void Delete(Movie item);
 
     bool CheckIfExists(int id);
-
-
-    //void Add_Category(Movie item);
-
-    //void Update_Category(Movie item);
-
-    
-
 }

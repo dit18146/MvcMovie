@@ -5,8 +5,6 @@ namespace MvcMovie.Services;
 
 public class DbMovieTypeService : IMovieTypeService
 {
-    //private MovieTypes db = new MovieTypes();
-
     public SQLiteConnection conn = new SQLiteConnection(
         "Data Source= C:\\Users\\papachristouj\\source\\repos\\MvcMovie\\MvcMovie\\App_Data\\movie.db; Version = 3; New = True; Compress = True; ");
 

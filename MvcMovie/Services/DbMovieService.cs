@@ -5,8 +5,6 @@ namespace MvcMovie.Services;
 
 public class DbMovieService : IMovieService
 {
-    //private readonly Movies _db = new Movies();
-
     private readonly SQLiteConnection _conn = new SQLiteConnection(
         "Data Source= C:\\Users\\papachristouj\\source\\repos\\MvcMovie\\MvcMovie\\App_Data\\movie.db; Version = 3; New = True; Compress = True; ");
 
@@ -44,12 +42,8 @@ public class DbMovieService : IMovieService
                 sqliteDataReader.GetString(2), sqliteDataReader.GetString(3)));
 
         sqliteDataReader.Close();
-
-        //conn.Close();
     }
 
-
-    /// <inheritdoc />
     public async Task<Movies?> GetCollectionAsync() => throw new NotImplementedException();
 
     public void Add(Movie item)
@@ -98,7 +92,7 @@ public class DbMovieService : IMovieService
 
         _db.Items.Clear();
 
-        //TODO: Handle Not Found
+        
         while (sqliteDataReader.Read())
             _db.Items.Add(new Movie(sqliteDataReader.GetInt16(0), sqliteDataReader.GetString(1),
                 sqliteDataReader.GetString(2), sqliteDataReader.GetInt32(3)));

@@ -4,37 +4,36 @@ namespace MvcMovie.Services;
 
 public class MemoryMovieService : IMovieService
 {
-    private readonly Movies _db;
+    private readonly Movies _db = new Movies();
 
-    public MemoryMovieService() => _db = CreateDb(50);
+    private int id_increment;
 
     public async Task<Movies?> GetCollectionAsync() => throw new NotImplementedException();
 
     public void Add(Movie item)
     {
+        ++id_increment;
+
+        item.Id = id_increment;
+
         _db.Items.Add(item);
     }
 
-    public void Add_Category(Movie item)
+    public bool CheckIfExists(int id)
     {
-        throw new NotImplementedException();
+        foreach (var item in _db.Items )
+        {
+            if (item.Id == id)
+
+                return true;
+        }
+        return false;
     }
 
-    public bool CheckIfExists(int id) => throw new NotImplementedException();
-
-    public void ClearDatabase()
-    {
-        throw new NotImplementedException();
-    }
-
-    public void CloseConnection()
-    {
-        throw new NotImplementedException();
-    }
-
+    
     public void Delete(Movie item)
     {
-        _db.Items.Remove(item);
+        _db.Items.RemoveAt(item.Id - 1);
     }
 
     public Movie? GetById(int? id)
@@ -46,13 +45,12 @@ public class MemoryMovieService : IMovieService
 
     public void Update(Movie item)
     {
-        throw new NotImplementedException();
+        _db.Items[item.Id - 1].Title = item.Title;
+
+        _db.Items[item.Id - 1].Description = item.Description;
+
+        _db.Items[item.Id - 1].MovieTypeId = item.MovieTypeId;
     }
 
-    public void Update_Category(Movie item)
-    {
-        throw new NotImplementedException();
-    }
-
-    private Movies CreateDb(int size) => throw new NotImplementedException();
+  
 }

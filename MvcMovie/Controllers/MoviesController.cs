@@ -201,7 +201,8 @@ public class MoviesController : Controller
 
         if (id != null)
         {
-            if (_movieService.CheckIfExists((int)id)) return View(model);
+            if (_movieService.CheckIfExists((int)id)) 
+                return View(model);
         }
 
         else

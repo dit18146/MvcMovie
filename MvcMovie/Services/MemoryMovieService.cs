@@ -18,6 +18,9 @@ public class MemoryMovieService : IMovieService
         new(8, "Comedy"),
         new(9, "Horror"),
         new(10, "N/A"),
+        new(11, "Sci-Fi"),
+        new(12, "Mystery"),
+        new(12, "Vintage")
     };
 
     public string JoinCategory(int id)
@@ -37,6 +40,22 @@ public class MemoryMovieService : IMovieService
         return null;
     }
 
+    public string JoinCategory(Movie movie)
+    {
+        var query =
+        from Movie in _db.Items
+        join MovieType in MovieTypes on movie.MovieTypeId equals MovieType.Id
+        where Movie.Id == movie.Id
+        select new
+        {
+            Name = MovieType.Name
+        };
+        foreach (var Item in query)
+        {
+            return Item.Name;
+        }
+        return null;
+    }
 
     public async Task<Movies?> GetCollectionAsync() => throw new NotImplementedException();
 
@@ -81,8 +100,7 @@ public class MemoryMovieService : IMovieService
 
         _db.Items[item.Id - 1].Description = item.Description;
 
-        _db.Items[item.Id - 1].MovieTypeId = item.MovieTypeId;
+        _db.Items[item.Id - 1].Name = JoinCategory(item);
     }
 
-  
 }

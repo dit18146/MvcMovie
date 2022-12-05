@@ -1,4 +1,7 @@
 ﻿using MvcMovie.Models;
+using System.Drawing;
+using System;
+using System.Xml.Linq;
 
 namespace MvcMovie.Services;
 
@@ -7,6 +10,33 @@ public class MemoryMovieService : IMovieService
     private readonly Movies _db = new Movies();
 
     private int id_increment;
+
+    List<MovieType> MovieTypes = new()
+    {
+        new(id: 6, name: "Adventure"),
+        new(7, "Action"),
+        new(8, "Comedy"),
+        new(9, "Horror"),
+        new(10, "N/A"),
+    };
+
+    public string JoinCategory(int id)
+    {
+        var query =
+        from Movie in _db.Items
+        join MovieType in MovieTypes on Movie.MovieTypeId equals MovieType.Id
+        where Movie.Id == id
+        select new
+        {
+            Name = MovieType.Name
+        };
+        foreach (var Item in query)
+        {
+            return Item.Name;
+        }
+        return null;
+    }
+
 
     public async Task<Movies?> GetCollectionAsync() => throw new NotImplementedException();
 
@@ -17,6 +47,8 @@ public class MemoryMovieService : IMovieService
         item.Id = id_increment;
 
         _db.Items.Add(item);
+
+        item.Name = JoinCategory(item.Id);
     }
 
     public bool CheckIfExists(int id)

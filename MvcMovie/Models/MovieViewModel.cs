@@ -17,12 +17,14 @@ public class MovieViewModel
 
 
     [Display(Name = "Description")]
+    [Required]
     [MaxLength(100)]
     public string? Description { get; set; }
 
 
     [Display(Name = "MovieTypeId")]
-    [Range(0, 1000)]
+    [Range(1, 100)]
+    [Required]
     public int? MovieTypeId { get; set; }
 
     [Display(Name = "Categories")]

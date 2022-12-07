@@ -49,20 +49,9 @@ public class MoviesController : Controller
 
         if (_movieService.CheckIfExists(model.Id) == false)
         {
-            if (model.Description == null)
-
-                model.Description = "N/A";
-
-
-            if (model.MovieTypeId == null)
-
-                _movieService.Add(new Movie(model.Id, model.Title, model.Description, 10));
-
-            else
                 _movieService.Add(new Movie(model.Id, model.Title, model.Description, (int)model.MovieTypeId));
         }
         else
-
         {
             ViewData["fail"] = "Id exists, please reenter id and movie title";
         }
@@ -78,13 +67,7 @@ public class MoviesController : Controller
     {
         if (ModelState.IsValid)
         {
-            if (model.MovieTypeId == null)
-
-                _movieService.Update(new Movie(model.Id, model.Title, model.Description, 10));
-
-            else
-
-                _movieService.Update(new Movie(model.Id, model.Title, model.Description, (int)model.MovieTypeId));
+            _movieService.Update(new Movie(model.Id, model.Title, model.Description, (int)model.MovieTypeId));
 
             TempData["success"] = "Upadated successfully";
 
@@ -161,25 +144,16 @@ public class MoviesController : Controller
     {
         if (!ModelState.IsValid)
         {
+            model.Categories = _movieTypeService.GetCollection();
+
             ViewData["fail"] = "Wrong Input";
 
             return View(model);
         }
 
         if (_movieService.CheckIfExists(model.Id) == false)
-        {
-            if (model.Description == null)
 
-                model.Description = "N/A";
-
-
-            if (model.MovieTypeId == null)
-
-                _movieService.Add(new Movie(model.Id, model.Title, model.Description, 10));
-
-            else
                 _movieService.Add(new Movie(model.Id, model.Title, model.Description, (int)model.MovieTypeId));
-        }
         else
 
         {
@@ -199,19 +173,9 @@ public class MoviesController : Controller
 
         model.Categories = _movieTypeService.GetCollection();
 
-        if (id != null)
-        {
-            if (_movieService.CheckIfExists((int)id)) 
-                return View(model);
-        }
-
-        else
-        {
-            id = 18;
+        if (_movieService.CheckIfExists((int)id)) 
 
             return View(model);
-        }
-
 
         TempData["fail"] = "Wrong Input, model validation failed";
 
@@ -224,13 +188,7 @@ public class MoviesController : Controller
     {
         if (ModelState.IsValid)
         {
-            if (model.MovieTypeId == null)
-
-                _movieService.Update(new Movie(model.Id, model.Title, model.Description, 10));
-
-            else
-
-                _movieService.Update(new Movie(model.Id, model.Title, model.Description, (int)model.MovieTypeId));
+            _movieService.Update(new Movie(model.Id, model.Title, model.Description, (int)model.MovieTypeId));
 
             TempData["success"] = "Upadated successfully";
 
@@ -250,20 +208,11 @@ public class MoviesController : Controller
 
         model.Categories = _movieTypeService.GetCollection();
 
-        if (id != null)
-        {
-            if (_movieService.CheckIfExists((int)id))
+      
+        if (_movieService.CheckIfExists((int)id))
                 
-                return View(model);
-        }
-
-        else
-        {
-            id = 1;
-
             return View(model);
-        }
-
+        
         TempData["fail"] = "Wrong Input, model validation failed";
 
         return RedirectToAction(nameof(Index));
@@ -273,15 +222,15 @@ public class MoviesController : Controller
     [ValidateAntiForgeryToken]
     public IActionResult Delete(MovieViewModel model)
     {
-        if (ModelState.IsValid)
-            if (_movieService.CheckIfExists(model.Id))
-            {
-                _movieService.Delete(new Movie(model.Id, model.Title, model.Description));
+       
+        if (_movieService.CheckIfExists(model.Id))
+        {
+            _movieService.Delete(new Movie(model.Id, model.Title, model.Description));
 
-                TempData["success"] = "Upadated successfully";
+            TempData["success"] = "Upadated successfully";
 
-                return RedirectToAction(nameof(Index));
-            }
+            return RedirectToAction(nameof(Index));
+        }
 
         TempData["fail"] = "Wrong Input, model validation failed";
 
@@ -329,19 +278,10 @@ public class MoviesController : Controller
     {
         var model = _movieTypeService.GetById(id);
 
-        if (id != null)
-        {
-            if (_movieTypeService.CheckIfExists((int)id)) return View(model);
-        }
-
-        else
-        {
-            id = 1;
+         if (_movieTypeService.CheckIfExists((int)id)) 
 
             return View(model);
-        }
-
-
+       
         TempData["fail"] = "Wrong Input, model validation failed";
 
         return RedirectToAction(nameof(Index));

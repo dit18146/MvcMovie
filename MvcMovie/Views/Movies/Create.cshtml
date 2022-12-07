@@ -21,11 +21,20 @@
 
         <br />
 
+        <span asp-validation-for="Title" class="text-danger"></span>
+
+        <br />
+
+
         <label for="Description" class="form-label mt-4">Description</label>
 
         <textarea asp-for="Description" type="text" class="form-control" id="Id" aria-describedby="Description" placeholder="Enter Description"> </textarea>
-
+        
         <small id="Id" class="form-text text-muted">Type movie description</small>
+
+        <br />
+
+        <span asp-validation-for="Title" class="text-danger"></span>
 
         <br />
 
@@ -34,6 +43,8 @@
             Movie Type
 
             <select id="MovieTypeId" name="MovieTypeId" class="form-select">
+
+                <option value="-1" selected>    </option>
 
                 @foreach (var items in Model.Categories.Items)
                 {
@@ -46,13 +57,17 @@
 
             <br />
 
+            <span asp-validation-for="MovieTypeId" class="text-danger"></span>
+
+            <br />
+
         </fieldset>
 
          <br />
 
         <div class ="btn">
 
-            <button id="subButton" type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#MyPopUp">Insert to database</button>
+            <button id="subButton" type="submit" class="btn btn-info btn-lg" @*data-toggle="modal" data-target="#MyPopUp"*@>Insert to database</button>
             <button id="AjaxSubButton" type="button" class="btn btn-info btn-danger">Ajax Create</button>
         </div>
 
@@ -104,13 +119,13 @@
 
         $(document).ready(function () {
 
-            var submitButtonElement = document.getElementById('subButton');
+            /*var submitButtonElement = document.getElementById('subButton');*/
 
             var ajaxSubmitButtonElement = document.getElementById('AjaxSubButton');
 
-            submitButtonElement.addEventListener('click', function () {
+            /*submitButtonElement.addEventListener('click', function () {
                 $('#MyPopUp').modal('show');
-            });
+            });*/
 
 
 

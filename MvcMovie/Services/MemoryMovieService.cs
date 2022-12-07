@@ -20,7 +20,7 @@ public class MemoryMovieService : IMovieService
         new(10, "N/A"),
         new(11, "Sci-Fi"),
         new(12, "Mystery"),
-        new(12, "Vintage")
+        new(13, "Vintage")
     };
 
     public string JoinCategory(int id)
@@ -68,6 +68,7 @@ public class MemoryMovieService : IMovieService
         _db.Items.Add(item);
 
         item.Name = JoinCategory(item.Id);
+
     }
 
     public bool CheckIfExists(int id)
@@ -84,7 +85,15 @@ public class MemoryMovieService : IMovieService
     
     public void Delete(Movie item)
     {
+        int i = 1;
+
         _db.Items.RemoveAt(item.Id - 1);
+
+        foreach(var movie in _db.Items)
+        {
+            movie.Id = i++;
+        }
+        id_increment = i;
     }
 
     public Movie? GetById(int? id)
@@ -99,6 +108,8 @@ public class MemoryMovieService : IMovieService
         _db.Items[item.Id - 1].Title = item.Title;
 
         _db.Items[item.Id - 1].Description = item.Description;
+
+        _db.Items[item.Id - 1].MovieTypeId = item.MovieTypeId;
 
         _db.Items[item.Id - 1].Name = JoinCategory(item);
     }

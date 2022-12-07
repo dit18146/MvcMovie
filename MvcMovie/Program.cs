@@ -7,7 +7,7 @@ builder.Services.AddSingleton<IMovieService, MemoryMovieService>();   //When IMo
 
 //builder.Services.AddSingleton<ISqlHelper, SqlHelper>();
 
-builder.Services.AddSingleton<IMovieService, DbMovieService>();
+//builder.Services.AddSingleton<IMovieService, DbMovieService>();
 
 //builder.Services.AddSingleton<IMovieService, DapperMovieService>();
 

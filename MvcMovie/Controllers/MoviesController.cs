@@ -169,7 +169,7 @@ public class MoviesController : Controller
     [Route("update/{id:int?}", Name = "Update_Get"), HttpGet]
     public IActionResult Update(int? id)
     {
-        var model = _movieService.GetById(id);
+       var model = _movieService.GetById(id);
 
         model.Categories = _movieTypeService.GetCollection();
 
@@ -197,7 +197,7 @@ public class MoviesController : Controller
 
         TempData["fail"] = "Wrong Input, model validation failed";
 
-        return RedirectToAction(nameof(Update), new { id = model.Id });
+        return View(new Movie(model.Id, model.Title, model.Description, (int)model.MovieTypeId));
     }
 
 
@@ -289,7 +289,7 @@ public class MoviesController : Controller
 
     [Route("updateCategory", Name = "Update_Category_Post"), HttpPost]
     [ValidateAntiForgeryToken]
-    public IActionResult Update(MovieTypeViewModel model)
+    public IActionResult Update_Category(MovieTypeViewModel model)
     {
         if (ModelState.IsValid)
         {
@@ -302,6 +302,6 @@ public class MoviesController : Controller
 
         TempData["fail"] = "Wrong Input, model validation failed";
 
-        return RedirectToAction(nameof(Categories_Index));
+        return View(new MovieType(model.Id, model.Name));
     }
 }

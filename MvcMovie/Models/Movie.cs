@@ -32,6 +32,7 @@ public class Movie
     [Display(Name = "Categories")]
     public MovieTypes Categories { get; set; } = new MovieTypes();
 
+    public Movie() { }
 
     public Movie(int id, string? title, string description)
     {

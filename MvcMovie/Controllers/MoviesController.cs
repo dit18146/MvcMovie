@@ -315,7 +315,7 @@ public class MoviesController : Controller
         return View(model);
     }
 
-    [Route("json-kendo", Name = "Kendo_Json_Index"), HttpGet]
+    [Route("json-kendo", Name = "Kendo_Json_Index")]
     public IActionResult Kendo_Json([DataSourceRequest] DataSourceRequest request)
     {
         var model = _movieService.GetCollection();
@@ -325,6 +325,31 @@ public class MoviesController : Controller
         return Json(model.Items.ToDataSourceResult(request));
     }
 
+    [AcceptVerbs("Post")]
+    [Route("json-kendo-update", Name = "Kendo_Json_Update")]
+    public IActionResult Kendo_Json_Update([DataSourceRequest] DataSourceRequest request, [Bind(Prefix = "models")] MovieViewModel model)
+    {
+       
 
-    
+        if (ModelState.IsValid)
+        {
+            _movieService.Update(new Movie(model.Id, model.Title, model.Description, (int)model.MovieTypeId));
+
+            TempData["success"] = "Upadated successfully";
+
+            var kendo_model = _movieService.GetCollection();
+
+            return Json(kendo_model.Items.ToDataSourceResult(request));
+        }
+
+       
+
+        TempData["fail"] = "Wrong Input, model validation failed";
+        
+        return RedirectToAction("Kendo_Json");
+
+    }
+
+
+
 }

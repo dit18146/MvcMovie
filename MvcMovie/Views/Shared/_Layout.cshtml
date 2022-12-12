@@ -1,9 +1,18 @@
-﻿<!DOCTYPE html>
+﻿@{
+    string kendoCdn = "https://kendo.cdn.telerik.com";
+    string kendoVersion = "2022.3.913";
+    string kendoCss = $"{kendoCdn}/{kendoVersion}/styles/kendo.bootstrap-v4.min.css";
+    string kendoJsAll = $"{kendoCdn}/{kendoVersion}/js/kendo.all.min.js";
+    string kendoJsMvc = $"{kendoCdn}/{kendoVersion}/js/kendo.aspnetmvc.min.js";
+    string kendoJsCulture = $"{kendoCdn}/{kendoVersion}/js/cultures/kendo.culture.en-GB.min.js";
+}
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>@ViewData["Title"] - Movie App</title>
+    <link rel="stylesheet" href="@kendoCss" />
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/bootswatchTheme.css" />
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
@@ -11,6 +20,8 @@
     <link rel=" stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css"/>
 </head>
 <body>
+    <script src="@kendoJsCulture"></script>
+    <script>kendo.culture('en-GB');</script>
     <header>
 
         <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
@@ -64,9 +75,11 @@
         </div>
     </footer>
     <script src="/lib/jquery/dist/jquery.min.js"></script>
-    <script src="/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    @*<script src="/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>*@
     <partial name="_ValidationScriptsPartial" />
     <script src="/js/site.js" asp-append-version="true"></script>
+    <script src="@kendoJsAll"></script>
+    <script src="@kendoJsMvc"></script>
     @await RenderSectionAsync("Scripts", required: false)
 
 </body>

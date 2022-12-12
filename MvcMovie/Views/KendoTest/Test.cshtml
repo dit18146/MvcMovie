@@ -1,14 +1,13 @@
-﻿
-
-@(
+﻿@(
 Html.Kendo().Grid<TestMovie>()
     .Name("Grid")
     .Columns(columns =>
     {
         columns.Bound(p => p.Id);
-        columns.Bound(p => p.Title);
+        columns.Bound(p => p.Title).Title("Movie Title");
         columns.Bound(p => p.Description);
     })
+    .Pageable(p => p.Refresh(true))
     .DataSource(dataSource => dataSource
         .Ajax()
         .PageSize(20)

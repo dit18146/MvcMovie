@@ -1,4 +1,5 @@
 ﻿using MvcMovie.Services;
+using Newtonsoft.Json.Serialization;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -15,6 +16,8 @@ builder.Services.AddSingleton<IMovieTypeService, DbMovieTypeService>();
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
+
+builder.Services.AddMvc().AddNewtonsoftJson(options => options.SerializerSettings.ContractResolver = new DefaultContractResolver());
 
 builder.Services.AddKendo();
 

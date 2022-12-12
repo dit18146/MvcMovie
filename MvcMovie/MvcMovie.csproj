@@ -12,6 +12,7 @@
     <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="7.0.0" />
     <PackageReference Include="Rick.Docs.Samples.RouteInfo" Version="1.0.0.8" />
     <PackageReference Include="System.Data.SQLite" Version="1.0.117" />
+    <PackageReference Include="Telerik.UI.for.AspNet.Core" Version="2022.3.1109" />
   </ItemGroup>
 
 </Project>

@@ -1,4 +1,6 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Kendo.Mvc.Extensions;
+using Kendo.Mvc.UI;
+using Microsoft.AspNetCore.Mvc;
 using MvcMovie.Models;
 using MvcMovie.Services;
 
@@ -303,5 +305,23 @@ public class MoviesController : Controller
         TempData["fail"] = "Wrong Input, model validation failed";
 
         return View(new MovieType(model.Id, model.Name));
+    }
+
+    [Route("Kendo", Name = "Kendo_Index")]
+    public IActionResult Kendo_Index()
+    {
+        var model = _movieService.GetCollection();
+
+        return View(model);
+    }
+
+    [Route("json-kendo", Name = "Kendo_Json_Index"), HttpGet]
+    public IActionResult Kendo_Json([DataSourceRequest] DataSourceRequest request)
+    {
+        var model = _movieService.GetCollection();
+
+        
+
+        return Json(model.Items.ToDataSourceResult(request));
     }
 }

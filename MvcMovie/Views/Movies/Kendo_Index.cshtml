@@ -1,0 +1,22 @@
+﻿@using Kendo.Mvc.UI;
+
+<div class="container">
+    <div class="row">
+            @(Html.Kendo().Grid<MvcMovie.Models.Movie>()
+            .Name("grid")
+            .Columns(columns =>
+            {
+                columns.Bound(c => c.Id).Width(140);
+                columns.Bound(c => c.Title).Width(190);
+                columns.Bound(c => c.Description);
+                columns.Bound(c => c.Name).Width(110);
+            })
+            .DataSource(dataSource => dataSource
+         
+                .Ajax()
+                .Read(read => read.Action("Kendo_Json", "Movies"))
+            )
+        )
+    </div>
+</div>
+

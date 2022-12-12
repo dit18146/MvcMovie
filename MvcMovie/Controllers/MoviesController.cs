@@ -326,20 +326,5 @@ public class MoviesController : Controller
     }
 
 
-    [Route("test", Name = "Kendo_Test"), HttpGet]
-    public IActionResult Test()
-    {
-        return View();
-    }
-
-    [Route("kendo-test/read", Name = "KendoGrid_Test_Read")]
-    public IActionResult TestKendoGridRead ([DataSourceRequest] DataSourceRequest request)
-    {
-        var model = new List<Movie>();
-
-        model.Add(new Movie(1, "The Lord of the Rings", "Description"));
-        model.Add(new Movie(2, "Blade Runner", "Description"));
-
-        return Json(model.ToDataSourceResult(request));
-    }
+    
 }

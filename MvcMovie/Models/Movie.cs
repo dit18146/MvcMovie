@@ -56,6 +56,13 @@ public class Movie
         Description = description;
         Name = name;
     }
-
+    public Movie(int id, string? title, string description, string name, int? movieTypeId)
+    {
+        Id = id;
+        Title = title;
+        Description = description;
+        Name = name;
+        MovieTypeId = movieTypeId;
+    }
     public Movie(MovieTypes categories) => Categories = categories;
 }

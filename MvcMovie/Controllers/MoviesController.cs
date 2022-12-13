@@ -39,7 +39,6 @@ public class MoviesController : Controller
     }
 
     [Route("json-create", Name = "Create_Json_Post"), HttpPost]
-    [ValidateAntiForgeryToken]
     public IActionResult Json_Create(MovieViewModel model)
     {
         if (!ModelState.IsValid)
@@ -82,7 +81,6 @@ public class MoviesController : Controller
     }
 
     [Route("json-delete", Name = "Delete_Json_Post"), HttpPost]
-    [ValidateAntiForgeryToken]
     public IActionResult Json_Delete(MovieViewModel model)
     {
         if (ModelState.IsValid)
@@ -320,34 +318,15 @@ public class MoviesController : Controller
     {
         var model = _movieService.GetCollection();
 
-        
-
         return Json(model.Items.ToDataSourceResult(request));
     }
 
-    [AcceptVerbs("Post")]
-    [Route("json-kendo-update", Name = "Kendo_Json_Update")]
-    public IActionResult Kendo_Json_Update([DataSourceRequest] DataSourceRequest request, [Bind(Prefix = "models")] MovieViewModel model)
+    [Route("get-categories", Name = "Get_Categories_Json")]
+    public IActionResult Get_Categories_Json([DataSourceRequest] DataSourceRequest request)
     {
-       
+        var model = _movieTypeService.GetCollection();
 
-        if (ModelState.IsValid)
-        {
-            _movieService.Update(new Movie(model.Id, model.Title, model.Description, (int)model.MovieTypeId));
-
-            TempData["success"] = "Upadated successfully";
-
-            var kendo_model = _movieService.GetCollection();
-
-            return Json(kendo_model.Items.ToDataSourceResult(request));
-        }
-
-       
-
-        TempData["fail"] = "Wrong Input, model validation failed";
-        
-        return RedirectToAction("Kendo_Json");
-
+        return Json(model.Items.ToDataSourceResult(request));
     }
 
 

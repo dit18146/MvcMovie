@@ -1,4 +1,8 @@
-﻿@(
+﻿<br />
+<br />
+
+
+@(
 Html.Kendo().Grid<Movie>()
 .Name("grid")
 .Columns(columns =>
@@ -6,10 +10,10 @@ Html.Kendo().Grid<Movie>()
     columns.Bound(c => c.Id).Width(140);
     columns.Bound(c => c.Title).Width(190);
     columns.Bound(c => c.Description).Width(250);
-    columns.Bound(c => c.MovieTypeId).Width(250);
     columns.Bound(c => c.Name).Width(110);
+    columns.Command(command => {command.Edit(); command.Destroy();}).Width(250);
 })
-
+.Events(e => e.Edit("hideIdField"))
 .DataSource(dataSource => dataSource
 
     .Ajax()
@@ -20,22 +24,34 @@ Html.Kendo().Grid<Movie>()
             model.Field(c => c.Id).Editable(false);
             model.Field(c => c.Title).Editable(true);
             model.Field(c => c.Description).Editable(true);
-            model.Field(c => c.MovieTypeId).Editable(false);
-            model.Field(c => c.Name).Editable(true);
+            model.Field(c => c.MovieTypeId).Editable(true);
+            model.Field(c => c.Name).Editable(false);
         })
     .Read(read => read.Action("Kendo_Json", "Movies"))
+    .Create(create => create.Action("Json_Create", "Movies"))
     .Update(update => update.Action("Json_Update", "Movies"))
-
+    .Destroy(destroy => destroy.Action("Json_Delete", "Movies"))
 )
-.ToolBar(toolbar =>
-{
-    toolbar.Save();
-    toolbar.Search();
-})
 .Pageable(c => c.Refresh(true))
-.Editable(editable => editable.Mode(GridEditMode.InCell))
+.Editable(editable => editable.Mode(GridEditMode.PopUp).ConfirmDelete("Continue to delete this record?").DisplayDeleteConfirmation("Continue to delete this record?"))
 .Sortable()
 .Navigatable()
 .Resizable(r => r.Columns(true))
 .Filterable()
+.ToolBar(toolbar =>
+    {
+        toolbar.Create();
+    })
 )
+
+@section Scripts
+{
+    <script>
+        function hideIdField(e) {
+            $("#Id").hide();
+            $("label[for='Id']").hide();
+            $("#Name").hide();
+            $("label[for='Name']").hide();
+        }  
+    </script>
+}

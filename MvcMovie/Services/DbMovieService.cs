@@ -23,27 +23,6 @@ public class DbMovieService : IMovieService
         return _conn;
     }
 
-    public void ReadData()
-    {
-        CreateConnection();
-
-        Movies _db = new Movies();
-
-        var sqliteCmd = _conn.CreateCommand();
-
-        sqliteCmd.CommandText =
-            "SELECT Movie.Id, Title, Description, Name FROM Movie, MovieType WHERE MovieType.Id = Movie.MovieTypeId";
-
-        var sqliteDataReader = sqliteCmd.ExecuteReader();
-
-
-        while (sqliteDataReader.Read())
-            _db.Items.Add(new Movie(sqliteDataReader.GetInt16(0), sqliteDataReader.GetString(1),
-                sqliteDataReader.GetString(2), sqliteDataReader.GetString(3)));
-
-        sqliteDataReader.Close();
-    }
-
     public async Task<Movies?> GetCollectionAsync() => throw new NotImplementedException();
 
     public void Add(Movie item)
@@ -130,14 +109,14 @@ public class DbMovieService : IMovieService
         var sqliteCmd = _conn.CreateCommand();
 
         sqliteCmd.CommandText =
-            "SELECT Movie.Id, Title, Description, Name FROM Movie, MovieType WHERE MovieType.Id = Movie.MovieTypeId";
+            "SELECT Movie.Id, Title, Description, Name, MovieType.id FROM Movie, MovieType WHERE MovieType.Id = Movie.MovieTypeId";
 
         var sqliteDataReader = sqliteCmd.ExecuteReader();
 
 
         while (sqliteDataReader.Read())
             _db.Items.Add(new Movie(sqliteDataReader.GetInt16(0), sqliteDataReader.GetString(1),
-                sqliteDataReader.GetString(2), sqliteDataReader.GetString(3)));
+                sqliteDataReader.GetString(2), sqliteDataReader.GetString(3), sqliteDataReader.GetInt16(4)));
 
         sqliteDataReader.Close();
 

@@ -1,48 +1,34 @@
-﻿<br />
+﻿
+<br />
 <br />
 
 
-@(
-Html.Kendo().Grid<Movie>()
-.Name("grid")
-.Columns(columns =>
-{
-    columns.Bound(c => c.Id).Width(140);
-    columns.Bound(c => c.Title).Width(190);
-    columns.Bound(c => c.Description).Width(250);
-    columns.Bound(c => c.Name).Width(110);
-    columns.Command(command => {command.Edit(); command.Destroy();}).Width(250);
-})
-.Events(e => e.Edit("hideIdField"))
-.DataSource(dataSource => dataSource
+<kendo-grid name="grid">
+    <groupable enabled="true" />
+    <sortable enabled="true" />
+    <filterable enabled="true" />
+    <pageable enabled="true" />
+    
+    <columns>
+        <column field="Id" width="120" />
+        <column field="Title" />
+        <column field="Description" width="300" />
+        <column field="Name" width="250" />
+    </columns>
+    
+   
+   
+    
+    <datasource type="DataSourceTagHelperType.Ajax">
+        <transport>
+            <read url="@Url.Action("Kendo_Json", "Movies")" />
+        </transport>
+    </datasource>
 
-    .Ajax()
-    .PageSize(20)
-    .Model(model =>
-        {
-            model.Id(c => c.Id);
-            model.Field(c => c.Id).Editable(false);
-            model.Field(c => c.Title).Editable(true);
-            model.Field(c => c.Description).Editable(true);
-            model.Field(c => c.MovieTypeId).Editable(true);
-            model.Field(c => c.Name).Editable(false);
-        })
-    .Read(read => read.Action("Kendo_Json", "Movies"))
-    .Create(create => create.Action("Json_Create", "Movies"))
-    .Update(update => update.Action("Json_Update", "Movies"))
-    .Destroy(destroy => destroy.Action("Json_Delete", "Movies"))
-)
-.Pageable(c => c.Refresh(true))
-.Editable(editable => editable.Mode(GridEditMode.PopUp).ConfirmDelete("Continue to delete this record?").DisplayDeleteConfirmation("Continue to delete this record?"))
-.Sortable()
-.Navigatable()
-.Resizable(r => r.Columns(true))
-.Filterable()
-.ToolBar(toolbar =>
-    {
-        toolbar.Create();
-    })
-)
+    
+
+</kendo-grid>
+
 
 @section Scripts
 {

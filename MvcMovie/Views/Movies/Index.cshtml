@@ -3,7 +3,7 @@
 
 
 <div>
-    <table class="table table-hover" id="table">
+    <table class="table table-hover" id="table"  hx-target="closest tr" hx-swap="outerHTML swap:1s">
         <tr> 
             <th>ID</th>
             <th>Title</th>
@@ -32,6 +32,21 @@
                 <td><a href="@Url.Action("Update", "Movies", new {id = item.Id})">Edit</a></td>
 
                 <td><a href="@Url.Action("Delete", "Movies", new {id = item.Id})">Delete</a></td>
+                
+                <td>
+                    <a href ="@Url.Action("Update", "Movies", new {id = item.Id})" hx-target="main" hx-push-url="true" hx-get="@Url.Action("Update", "Movies", new {id = item.Id})">HTMX edit</a>
+                </td>
+
+                <td>
+                    <a href="@Url.Action("Delete", "Movies", new {id = item.Id})" hx-target="main" hx-push-url="true" hx-get="@Url.Action("Delete", "Movies", new {id = item.Id})">HTMX edit</a>
+                </td>
+                
+                <td>
+                    <button class="btn btn-danger"  hx-delete="@Url.RouteUrl("Delete_Htmx", new {id = item.Id})">
+                    Delete
+                    </button>
+                </td>
+                
             </tr>   
         }
   
@@ -39,8 +54,11 @@
 </div>
 
 <div class = "btns">
-            <button id="AjaxSubButton" type="button" class="btn btn-info btn-danger">View Records with Ajax</button>
-            <button id="AjaxGetButton" type="button" class="btn btn-primary btn-primary">View Records with Partial View and Ajax</button>
+    <button id="AjaxSubButton" type="button" class="btn btn-info btn-danger">View Records with Ajax</button>
+    <button id="AjaxGetButton" type="button" class="btn btn-primary btn-primary">View Records with Partial View and Ajax</button>
+    <button class="btn btn-dark" hx-get="/movies">
+        View table
+    </button>
 </div>
 
 <br />
@@ -54,6 +72,13 @@
 
 
 </div>
+
+<style>
+    tr.htmx-swapping td {
+        opacity: 0;
+        transition: opacity 1s ease-out;
+    }
+</style>
 
 @section Scripts
 {

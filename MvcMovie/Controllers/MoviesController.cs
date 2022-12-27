@@ -237,6 +237,26 @@ public class MoviesController : Controller
         return RedirectToAction(nameof(Index));
     }
 
+    [Route("delete-htmx/{id:int?}", Name = "Delete_Htmx"), HttpDelete]
+    public void Delete_Htmx(int? id)
+    {
+
+        var model = _movieService.GetById(id);
+
+        model.Categories = _movieTypeService.GetCollection();
+
+
+        if (_movieService.CheckIfExists((int)id))
+        {
+            _movieService.Delete(new Movie(model.Id, model.Title, model.Description));
+
+            TempData["success"] = "Upadated successfully";
+        }
+
+        TempData["fail"] = "Wrong Input, model validation failed";
+
+    }
+
     [Route("categories", Name = "Categories_Index")]
     public IActionResult Categories_Index()
     {
@@ -327,6 +347,13 @@ public class MoviesController : Controller
         var model = _movieTypeService.GetCollection();
 
         return Json(model.Items.ToDataSourceResult(request));
+    }
+
+    [Route("modal", Name = "Modal")]
+    public IActionResult Modal()
+    {
+
+        return PartialView("_Dialog");
     }
 
 

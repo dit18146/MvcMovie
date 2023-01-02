@@ -29,7 +29,7 @@
 
                 <td><a asp-controller="Movies" asp-action="Details" asp-route-id="@item.Id"> detail3</a> </td>
 
-                <td><a class="btn btn-primary" data-bs-toggle="offcanvas" role="button" aria-controls="offcanvasExample" href="#offcanvasExample">offcanvas details</a></td>
+                <td><a class="btn btn-primary" data-bs-toggle="offcanvas" role="button" aria-controls="offcanvasExample" href="#offcanvasExample" onclick="find_id('@item.Id', '@item.Title', '@item.Name')">offcanvas details</a></td>
 
                 <td><a href="@Url.Action("Update", "Movies", new {id = item.Id})">Edit</a></td>
 
@@ -77,8 +77,8 @@
         <h5 class="offcanvas-title" id="offcanvasExampleLabel">Movie Details</h5>
         <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
     </div>
-    <div class="offcanvas-body">
-        <a href="@Url.Action("Details", "Movies", new { id = 19})">detail2</a>
+    <div class="offcanvas-body" id="offcanvas-body">
+        
         
     </div>
 </div>
@@ -150,7 +150,21 @@
                 });
 
             });
+
+           
         });
 
+        function find_id(id, title, name) {
+
+
+
+            $('#offcanvas-body').html('<table><tr><th>Movie ID </th><th> Movie Title </th><th> Movie Category </th></tr><tr> ' + ' <td> ' + id + ' </td>  <td>' + title + ' </td > <td>' + name + ' </tr> </td > </table>');
+
+
+              
+             
+                
+
+        }
     </script>
 }

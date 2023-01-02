@@ -131,7 +131,7 @@ public class MoviesController : Controller
     {
         var model = _movieService.GetById(id);
 
-        return PartialView(model);
+        return PartialView("_Details");
     }
 
     [Route("create", Name = "Create"), HttpGet]

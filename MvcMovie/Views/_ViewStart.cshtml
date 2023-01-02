@@ -1,3 +1,8 @@
-﻿@{
-    Layout = "_Layout";
+﻿@using Htmx
+@using MvcMovie.Extensions
+@{
+    bool isAjaxRequest = Context.Request.IsAjaxRequest() || Context.Request.IsHtmx();
+    const string defaultLayout = "~/Views/Shared/_Layout.cshtml";
+    string? layout = isAjaxRequest ? null : defaultLayout;
+    Layout = layout;
 }

@@ -25,9 +25,11 @@
             
                 <td><a href="@Url.RouteUrl("Movies_Details", new {id = item.Id})">detail1</a></td>
 
-                <td><a href="@Url.Action("Detail", "Movies", new { id = item.Id})">detail2</a></td>
+                <td><a href="@Url.Action("Details", "Movies", new { id = item.Id})">detail2</a></td>
 
                 <td><a asp-controller="Movies" asp-action="Details" asp-route-id="@item.Id"> detail3</a> </td>
+
+                <td><a class="btn btn-primary" data-bs-toggle="offcanvas" role="button" aria-controls="offcanvasExample" href="#offcanvasExample">offcanvas details</a></td>
 
                 <td><a href="@Url.Action("Update", "Movies", new {id = item.Id})">Edit</a></td>
 
@@ -38,7 +40,7 @@
                 </td>
 
                 <td>
-                    <a href="@Url.Action("Delete", "Movies", new {id = item.Id})" hx-target="main" hx-push-url="true" hx-get="@Url.Action("Delete", "Movies", new {id = item.Id})">HTMX edit</a>
+                    <a href="@Url.Action("Delete", "Movies", new {id = item.Id})" hx-target="main" hx-push-url="true" hx-get="@Url.Action("Delete", "Movies", new {id = item.Id})">HTMX delete</a>
                 </td>
                 
                 <td>
@@ -56,9 +58,6 @@
 <div class = "btns">
     <button id="AjaxSubButton" type="button" class="btn btn-info btn-danger">View Records with Ajax</button>
     <button id="AjaxGetButton" type="button" class="btn btn-primary btn-primary">View Records with Partial View and Ajax</button>
-    <button class="btn btn-dark" hx-get="/movies">
-        View table
-    </button>
 </div>
 
 <br />
@@ -71,6 +70,17 @@
 <div id="result_partial_view">
 
 
+</div>
+
+<div class="offcanvas offcanvas-start" tabindex="-1" id="offcanvasExample" aria-labelledby="offcanvasExampleLabel">
+    <div class="offcanvas-header">
+        <h5 class="offcanvas-title" id="offcanvasExampleLabel">Movie Details</h5>
+        <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+    </div>
+    <div class="offcanvas-body">
+        <a href="@Url.Action("Details", "Movies", new { id = 19})">detail2</a>
+        
+    </div>
 </div>
 
 <style>

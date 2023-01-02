@@ -126,6 +126,14 @@ public class MoviesController : Controller
         return View(model);
     }
 
+    [Route("detail-offcanvas/{id:int?}", Name = "Movies_Details_Offcanvas")] //naming is important        
+    public IActionResult Details_Offcanvas(int? id)
+    {
+        var model = _movieService.GetById(id);
+
+        return PartialView(model);
+    }
+
     [Route("create", Name = "Create"), HttpGet]
     public IActionResult Create()
     {

@@ -31,6 +31,8 @@
 
                 <td><a class="btn btn-primary" data-bs-toggle="offcanvas" role="button" aria-controls="offcanvasExample" href="#offcanvasExample" onclick="find_id('@item.Id', '@item.Title', '@item.Name')">offcanvas details</a></td>
 
+                <td><a class="btn btn-dark" data-bs-toggle="offcanvas" role="button" aria-controls="offcanvasExample" href="#offcanvasExample2" hx-get="/movies/detail/@item.Id" hx-target="#offcanvas-body2">offcanvas details htmx</a></td>
+
                 <td><a href="@Url.Action("Update", "Movies", new {id = item.Id})">Edit</a></td>
 
                 <td><a href="@Url.Action("Delete", "Movies", new {id = item.Id})">Delete</a></td>
@@ -72,6 +74,18 @@
 
 </div>
 
+<div class="offcanvas offcanvas-start" tabindex="-1" id="offcanvasExample2" aria-labelledby="offcanvasExampleLabel">
+    <div class="offcanvas-header">
+        <h5 class="offcanvas-title" id="offcanvasExampleLabel">Movie Details</h5>
+        <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+    </div>
+    <div class="offcanvas-body" id="offcanvas-body2" >
+
+        
+
+    </div>
+</div>
+
 <div class="offcanvas offcanvas-start" tabindex="-1" id="offcanvasExample" aria-labelledby="offcanvasExampleLabel">
     <div class="offcanvas-header">
         <h5 class="offcanvas-title" id="offcanvasExampleLabel">Movie Details</h5>
@@ -79,9 +93,10 @@
     </div>
     <div class="offcanvas-body" id="offcanvas-body">
         
-        
+
     </div>
 </div>
+
 
 <style>
     tr.htmx-swapping td {
@@ -156,15 +171,10 @@
 
         function find_id(id, title, name) {
 
-
-
             $('#offcanvas-body').html('<table><tr><th>Movie ID </th><th> Movie Title </th><th> Movie Category </th></tr><tr> ' + ' <td> ' + id + ' </td>  <td>' + title + ' </td > <td>' + name + ' </tr> </td > </table>');
 
-
-              
-             
-                
-
         }
+
+        
     </script>
 }

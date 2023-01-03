@@ -31,7 +31,7 @@
 
                 <td><a class="btn btn-primary" data-bs-toggle="offcanvas" role="button" aria-controls="offcanvasExample" href="#offcanvasExample" onclick="find_id('@item.Id', '@item.Title', '@item.Name')">offcanvas details</a></td>
 
-                <td><a class="btn btn-dark" data-bs-toggle="offcanvas" role="button" aria-controls="offcanvasExample" href="#offcanvasExample2" hx-get="/movies/detail/@item.Id" hx-target="#offcanvas-body2">offcanvas details htmx</a></td>
+                <td><a class="btn btn-dark" data-bs-toggle="offcanvas" role="button" aria-controls="offcanvasExample" href="#offcanvasExample2" hx-get="@Url.RouteUrl("Movies_Details", new {id = item.Id})" hx-target="#offcanvas-body2" hx-swap="innerHTML">offcanvas details htmx</a></td>
 
                 <td><a href="@Url.Action("Update", "Movies", new {id = item.Id})">Edit</a></td>
 
@@ -60,6 +60,7 @@
 <div class = "btns">
     <button id="AjaxSubButton" type="button" class="btn btn-info btn-danger">View Records with Ajax</button>
     <button id="AjaxGetButton" type="button" class="btn btn-primary btn-primary">View Records with Partial View and Ajax</button>
+    <button class="btn btn-dark" data-bs-toggle="offcanvas" role="button" aria-controls="offcanvasExample" href="#offcanvasExample3" hx-get="/movies/create" hx-target="#offcanvas-body3" hx-swap="innerHTML">offcanvas create htmx</button>
 </div>
 
 <br />
@@ -74,17 +75,7 @@
 
 </div>
 
-<div class="offcanvas offcanvas-start" tabindex="-1" id="offcanvasExample2" aria-labelledby="offcanvasExampleLabel">
-    <div class="offcanvas-header">
-        <h5 class="offcanvas-title" id="offcanvasExampleLabel">Movie Details</h5>
-        <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
-    </div>
-    <div class="offcanvas-body" id="offcanvas-body2" >
 
-        
-
-    </div>
-</div>
 
 <div class="offcanvas offcanvas-start" tabindex="-1" id="offcanvasExample" aria-labelledby="offcanvasExampleLabel">
     <div class="offcanvas-header">
@@ -94,6 +85,24 @@
     <div class="offcanvas-body" id="offcanvas-body">
         
 
+    </div>
+</div>
+
+<div class="offcanvas offcanvas-start" tabindex="-1" id="offcanvasExample2" aria-labelledby="offcanvasExampleLabel">
+    <div class="offcanvas-header">
+        <h5 class="offcanvas-title" id="offcanvasExampleLabel">Movie Details</h5>
+        <button type="button" class="btn-close text-reset"  data-bs-dismiss="offcanvas" aria-label="Close"></button>
+    </div>
+    <div class="offcanvas-body" id="offcanvas-body2">
+    </div>
+</div>
+
+<div class="offcanvas offcanvas-start" tabindex="-1" id="offcanvasExample3" aria-labelledby="offcanvasExampleLabel">
+    <div class="offcanvas-header">
+        <h5 class="offcanvas-title" id="offcanvasExampleLabel">Movie Details</h5>
+        <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+    </div>
+    <div class="offcanvas-body" id="offcanvas-body3">
     </div>
 </div>
 

@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.Drawing;
 
 namespace MvcMovie.Models;
 
@@ -9,6 +10,7 @@ public class MovieViewModel
     [Required]
     [Range(0, 1000)]
     public int Id { get; set; }
+
 
     [Display(Name = "Title")]
     [Required]
@@ -30,6 +32,7 @@ public class MovieViewModel
     [Display(Name = "Categories")]
     public MovieTypes? Categories { get; set; }
 
+   
 
     public int i;
 }

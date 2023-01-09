@@ -9,10 +9,10 @@
     <pageable enabled="true" />
     
     <columns>
-        <column field="Id" width="120" />
-        <column field="Title" />
-        <column field="Description" width="300" />
-        <column field="Name" width="250" />
+        <column field="Id" width="120"/>
+        <column field="Title"/>
+        <column field="Description" width="300"/>
+        <column field="Name" width="250"/>
     </columns>
     
    
@@ -28,9 +28,44 @@
 
 </kendo-grid>
 
-<kendo-window name="window" title="Window View" draggable="true" resizable="true" content-url="@Url.Action("Modal", "Movies")">
+<br/>
+<br/>
+
+<kendo-grid name="grids" >
+    <groupable enabled="true" />
+    <sortable enabled="true" />
+    <filterable enabled="true" />
+    <pageable enabled="true" />
     
-</kendo-window>
+    <columns>
+        <column field="Rank" width="120"/>
+        <column field="Title"/>
+        <column field="Genre" width="300"/>
+        <column field="Description" width="400"/>
+        <column field="Director" width="120" />
+        <column field="Actors" />
+        <column field="Year" width="120" />
+        <column field="Runtime" width="120" />
+        <column field="Rating" width="120" />
+        <column field="Votes" />
+        <column field="Revenue" width="120" />
+        <column field="MetaScore" width="120" />
+    </columns>
+    
+   
+   
+    
+    <datasource type="DataSourceTagHelperType.Ajax">
+        <transport>
+            <read url="@Url.Action("Read_File", "Movies")" />
+        </transport>
+    </datasource>
+
+    
+
+</kendo-grid>
+
+
 
 <span id="undo" style="display:none" class="k-button k-button-solid-base k-button-solid k-button-md k-rounded-md hide-on-narrow">Click here to open the window.</span>
 

@@ -3,12 +3,12 @@ using Newtonsoft.Json.Serialization;
 
 var builder = WebApplication.CreateBuilder(args);
 
-//builder.Services.AddSingleton<IMovieService, MemoryMovieService>();   //When IMovieService is used an instance of MemoryMovieService is created
+builder.Services.AddSingleton<IMovieService, MemoryMovieService>();   //When IMovieService is used an instance of MemoryMovieService is created
 
 
 //builder.Services.AddSingleton<ISqlHelper, SqlHelper>();
 
-builder.Services.AddSingleton<IMovieService, DbMovieService>();
+//builder.Services.AddSingleton<IMovieService, DbMovieService>();
 
 //builder.Services.AddSingleton<IMovieService, DapperMovieService>();
 

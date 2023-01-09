@@ -4,8 +4,9 @@
 
 <div>
     <table class="table table-hover" id="table"  hx-target="closest tr" hx-swap="outerHTML swap:1s">
-        <tr> 
+        <tr>
             <th>ID</th>
+            <th>Image</th>
             <th>Title</th>
             <th>Description</th>
             <th> Category </th>
@@ -15,42 +16,45 @@
         @foreach(var item in Model.Items)
         {
             <tr class="table-secondary text-secondary">
+              
                 <td>@item.Id</td>
+                
+                <td>@item.MovieImage</td>
 
                 <td>@item.Title</td>
 
                 <td>@item.Description</td>
 
                 <td>@item.Name</td>
-            
-                <td><a href="@Url.RouteUrl("Movies_Details", new {id = item.Id})">detail1</a></td>
 
-                <td><a href="@Url.Action("Details", "Movies", new { id = item.Id})">detail2</a></td>
+                <td><a href="@Url.RouteUrl("Movies_Details", new { id = item.Id })">detail1</a></td>
+
+                <td><a href="@Url.Action("Details", "Movies", new { id = item.Id })">detail2</a></td>
 
                 <td><a asp-controller="Movies" asp-action="Details" asp-route-id="@item.Id"> detail3</a> </td>
 
                 <td><a class="btn btn-primary" data-bs-toggle="offcanvas" role="button" aria-controls="offcanvasExample" href="#offcanvasExample" onclick="find_id('@item.Id', '@item.Title', '@item.Name')">offcanvas details</a></td>
 
-                <td><a class="btn btn-dark" data-bs-toggle="offcanvas" role="button" aria-controls="offcanvasExample" href="#offcanvasExample2" hx-get="@Url.RouteUrl("Movies_Details", new {id = item.Id})" hx-target="#offcanvas-body2" hx-swap="innerHTML">offcanvas details htmx</a></td>
+                <td><a class="btn btn-dark" data-bs-toggle="offcanvas" role="button" aria-controls="offcanvasExample" href="#offcanvasExample2" hx-get="@Url.RouteUrl("Movies_Details", new { id = item.Id })" hx-target="#offcanvas-body2" hx-swap="innerHTML">offcanvas details htmx</a></td>
 
-                <td><a href="@Url.Action("Update", "Movies", new {id = item.Id})">Edit</a></td>
+                <td><a href="@Url.Action("Update", "Movies", new { id = item.Id })">Edit</a></td>
 
-                <td><a href="@Url.Action("Delete", "Movies", new {id = item.Id})">Delete</a></td>
-                
+                <td><a href="@Url.Action("Delete", "Movies", new { id = item.Id })">Delete</a></td>
+
                 <td>
-                    <a href ="@Url.Action("Update", "Movies", new {id = item.Id})" hx-target="main" hx-push-url="true" hx-get="@Url.Action("Update", "Movies", new {id = item.Id})">HTMX edit</a>
+                    <a href="@Url.Action("Update", "Movies", new { id = item.Id })" hx-target="main" hx-push-url="true" hx-get="@Url.Action("Update", "Movies", new { id = item.Id })">HTMX edit</a>
                 </td>
 
                 <td>
-                    <a href="@Url.Action("Delete", "Movies", new {id = item.Id})" hx-target="main" hx-push-url="true" hx-get="@Url.Action("Delete", "Movies", new {id = item.Id})">HTMX delete</a>
+                    <a href="@Url.Action("Delete", "Movies", new { id = item.Id })" hx-target="main" hx-push-url="true" hx-get="@Url.Action("Delete", "Movies", new { id = item.Id })">HTMX delete</a>
                 </td>
-                
+
                 <td>
-                    <button class="btn btn-danger"  hx-delete="@Url.RouteUrl("Delete_Htmx", new {id = item.Id})">
-                    Delete
+                    <button class="btn btn-danger" hx-delete="@Url.RouteUrl("Delete_Htmx", new { id = item.Id })">
+                        Delete
                     </button>
                 </td>
-                
+
             </tr>   
         }
   

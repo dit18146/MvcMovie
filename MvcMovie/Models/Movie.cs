@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.Drawing;
 using System.Xml.Linq;
 
 namespace MvcMovie.Models;
@@ -29,6 +30,8 @@ public class Movie
 
     public string? Name { get; set; }
 
+    public string MovieImage;
+
     [Display(Name = "Categories")]
     public MovieTypes Categories { get; set; } = new MovieTypes();
 
@@ -52,6 +55,15 @@ public class Movie
     public Movie(int id, string? title, string description, string name)
     {
         Id = id;
+        Title = title;
+        Description = description;
+        Name = name;
+    }
+
+    public Movie(int id, string MovieImage, string? title, string description, string name)
+    {
+        Id = id;
+        MovieImage = this.MovieImage;
         Title = title;
         Description = description;
         Name = name;

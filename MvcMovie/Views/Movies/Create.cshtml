@@ -9,9 +9,24 @@
     <br />
 
     <h1 style ="text-align: center;">Insert Movie</h1>
+    
+    <label for="Image" class="form-label mt-4">Title</label>
 
-    <form asp-route = "Create" method = "post" id="form">
+    <form asp-route="Create" method="post" id="form" multipart /form-data>
 
+        <small id="Id" class="form-text text-muted">Movie Title should be a text</small>
+
+        <br />
+        
+        @(Html.Kendo().Upload()
+            .Name("file")
+            .Async(a => a
+                .Save("Upload_File","Movies")
+                .AutoUpload(true)
+                
+            )
+            .DropZone(".dropZoneElement"))
+        <br />
 
         <label for="Title" class="form-label mt-4">Title</label>
 

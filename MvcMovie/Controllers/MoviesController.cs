@@ -1,8 +1,18 @@
-﻿using Kendo.Mvc.Extensions;
+﻿using System.Data;
+using System.Drawing;
+using System.Drawing.Drawing2D;
+using System.Drawing.Imaging;
+using System.Text;
+using Kendo.Mvc.Extensions;
 using Kendo.Mvc.UI;
 using Microsoft.AspNetCore.Mvc;
 using MvcMovie.Models;
 using MvcMovie.Services;
+using System.Web;
+using Newtonsoft.Json;
+using CsvHelper;
+using Bond.Expressions;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace MvcMovie.Controllers;
 
@@ -287,6 +297,7 @@ public class MoviesController : Controller
     [ValidateAntiForgeryToken]
     public IActionResult Create_Category(MovieTypeViewModel model)
     {
+       
         if (ModelState.IsValid)
         {
             _movieTypeService.Add(new MovieType(model.Id, model.Name));
@@ -349,6 +360,73 @@ public class MoviesController : Controller
         return Json(model.Items.ToDataSourceResult(request));
     }
 
+    
+   
+    
+    [Route("read-file", Name = "Read_File"), HttpPost]
+    public ActionResult Read_File([DataSourceRequest] DataSourceRequest request)
+    {
+        var csv = new List<CSVModel>();
+        
+        var lines = System.IO.File.ReadAllLines(@"C:\Users\papachristouj\source\repos\MvcMovie\MvcMovie\Files\IMDB-Movie-Data.csv");
+        foreach (var line in lines)
+        {
+            csv.Add(new CSVModel
+            {
+                Rank = line.Split(',')[0],
+                Title = line.Split(',')[1],
+                Genre = line.Split(',')[2],
+                Description = line.Split(',')[3],
+                Directors = line.Split(',')[4],
+                Actors = line.Split(',')[5],
+                Year = line.Split(',')[6],
+                Runtime = line.Split(',')[7],
+                Rating = line.Split(',')[8],
+                Votes = line.Split(',')[9],
+                Revenue = line.Split(',')[10],
+                Metascore = line.Split(',')[11]
+            });
+        }
+        string json = JsonConvert.SerializeObject(csv);
+
+        return Json(csv.ToDataSourceResult(request));
+    }
+
+    [Route("upload-file", Name = "Upload_File"), HttpPost]
+    public ActionResult Upload_File(FileModel model)
+    {
+        
+        string folder = "C:\\Users\\papachristouj\\source\\repos\\MvcMovie\\MvcMovie\\Uploaded Files\\";
+        if (!Directory.Exists(folder))
+        {
+            Directory.CreateDirectory(folder);
+        }
+
+        // save the files to the folder
+       
+        string fileName = Guid.NewGuid().ToString() + Path.GetExtension(model.File.FileName);
+        string filePath = Path.Combine(folder, fileName);
+        using (var stream = new FileStream(filePath, FileMode.Create))
+        {
+            model.File.CopyTo(stream);
+        }
+        // convert file to jpg
+        using (var image = Image.FromStream(model.File.OpenReadStream()))
+        using (var newImage = new Bitmap(image))
+        using (var graphics = Graphics.FromImage(newImage))
+        using (var stream = new FileStream(Path.Combine(folder, "image.jpg"), FileMode.Create))
+        {
+            graphics.CompositingQuality = CompositingQuality.HighQuality;
+            graphics.InterpolationMode = InterpolationMode.HighQualityBicubic;
+            graphics.SmoothingMode = SmoothingMode.HighQuality;
+            newImage.Save(stream, ImageFormat.Jpeg);
+        }
+
+        return Ok();
+    }
+
+
+
     [Route("get-categories", Name = "Get_Categories_Json")]
     public IActionResult Get_Categories_Json([DataSourceRequest] DataSourceRequest request)
     {
@@ -356,6 +434,8 @@ public class MoviesController : Controller
 
         return Json(model.Items.ToDataSourceResult(request));
     }
+
+
 
     [Route("modal", Name = "Modal")]
     public IActionResult Modal()

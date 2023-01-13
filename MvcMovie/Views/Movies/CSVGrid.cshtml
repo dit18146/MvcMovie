@@ -1,0 +1,29 @@
+﻿@if (ViewData["fail"] == null)
+{
+    <kendo-grid name="grids" >
+        <groupable enabled="true" />
+        <sortable enabled="true" />
+        <filterable enabled="true" />
+        <pageable enabled="true" />
+
+        <columns>
+            <column field="CustomerId" width="300" />
+            <column field="Login" />
+            <column field="X1" width="300" />
+        </columns>
+
+        <datasource type="DataSourceTagHelperType.Ajax">
+            <transport>
+                <read url="@Url.Action("Read_File", "Movies")" />
+            </transport>
+        </datasource>
+
+
+
+    </kendo-grid>
+}
+else
+{
+    <h6>@ViewData["fail"]</h6>
+}
+<br/>

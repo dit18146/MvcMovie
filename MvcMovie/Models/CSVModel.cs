@@ -1,19 +1,22 @@
-﻿namespace MvcMovie.Models
+﻿using MessagePack;
+using System.ComponentModel.DataAnnotations;
+using System.Xml.Linq;
+
+namespace MvcMovie.Models
 {
     public class CSVModel
     {
-        public string Rank { get; set; }
-        public string Title { get; set; }
-        public string Genre { get; set; }
-        public string Description { get; set; }
-        public string Directors { get; set; }
-        public string Actors { get; set; }
-        public string Year { get; set; }
-        public string Runtime { get; set; }
-        public string Rating { get; set; }
-        public string Votes { get; set; }
-        public string Revenue { get; set; }
-        public string Metascore { get; set; }
+        [Display(Name = "CustomerId")]
+        [Required]
+        public long CustomerId { get; set; }
+        [Display(Name = "Login")]
+        [Required]
+        public string Login { get; set; }
+        [Display(Name = "X1")]
+        [Required]
+        public string X1 { get; set; }
+
+        
 
     }
 }

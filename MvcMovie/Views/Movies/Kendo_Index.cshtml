@@ -1,25 +1,27 @@
 ﻿<br/>
 <br/>
 
-@(Html.Kendo().Upload()
-    .Name("file")
-    .Async(a => a
-        .Save("Upload_File","Movies")
-        .AutoUpload(false)
+<div id ="upload">
+    @(Html.Kendo().Upload()
+        .Name("file")
+        .Async(a => a
+            .Save("Upload_File","Movies")
+            .AutoUpload(false)
         
                 
-    )
-    .Events(events => events.Upload("onUpload"))
-    .DropZone(".dropZoneElement")
-    .Multiple(false)
-    .Validation(validation =>
-    {
-        validation.AllowedExtensions("csv");
-        validation.MaxFileSize(3145728);
+        )
+        .Events(events => events.Upload("onUpload"))
+        .DropZone(".dropZoneElement")
+        .Multiple(false)
+        .Validation(validation =>
+        {
+            validation.AllowedExtensions("csv");
+            validation.MaxFileSize(3145728);
 
-    })
-    )
+        })
+        )
 
+</div>
 
 <div id="grid">
 
@@ -45,6 +47,9 @@
                 success: function (response) {
                     console.log("success");
                     $('#grid').html(response);
+                    var div = document.getElementById("upload");
+                    div.style.display = "none";
+
                 },
                 error: function (xhr, textStatus) {
                     console.log(xhr.status);

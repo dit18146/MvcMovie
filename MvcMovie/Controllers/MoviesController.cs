@@ -386,7 +386,7 @@ public class MoviesController : Controller
         }
     }
 
-    private string fileName = Guid.NewGuid().ToString() + ".csv";
+   
     [Route("upload-file", Name = "Upload_File")]
     [HttpPost]
     public ActionResult Upload_File(FileModel model)
@@ -396,8 +396,8 @@ public class MoviesController : Controller
 
         // save the files to the folder
 
-        
-        var filePath = Path.Combine(folder, fileName);
+        var fileName = Guid.NewGuid() + Path.GetExtension(model.File.FileName);
+        var filePath = Path.Combine(folder, model.File.FileName);
         using (var stream = new FileStream(filePath, FileMode.Create))
         {
             model.File.CopyTo(stream);

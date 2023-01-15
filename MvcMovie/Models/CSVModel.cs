@@ -16,7 +16,8 @@ namespace MvcMovie.Models
         [Required]
         public string X1 { get; set; }
 
-        
+      
+
 
     }
 }

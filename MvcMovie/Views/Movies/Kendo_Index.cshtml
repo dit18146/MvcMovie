@@ -6,47 +6,73 @@
     .Async(a => a
         .Save("Upload_File","Movies")
         .AutoUpload(false)
+        
                 
     )
+    .Events(events => events.Upload("onUpload"))
     .DropZone(".dropZoneElement")
-    //.Events(events => events.Select("uploadForm"))
-)
+    .Multiple(false)
+    .Validation(validation =>
+    {
+        validation.AllowedExtensions("csv");
+        validation.MaxFileSize(3145728);
+
+    })
+    )
 
 
 <div id="grid">
 
 </div>
 
+<br>
+
+<br>
+
+<div id="error">
+
+</div>
 
 @section Scripts
 {
     <script>
-        $(function () {
-            $("#uploadForm").submit(function (e) {
-                e.preventDefault();
-                var formData = new FormData();
-                var totalFiles = document.getElementById("uploadForm").files.length;
-                for (var i = 0; i < totalFiles; i++) {
-                    var file = document.getElementById("uploadForm").files[i];
-                    formData.append("uploadForm", file);
+        var trHTML = '';
+        function onUpload(e) {
+            $.ajax({
+                type: "GET",
+                url: "@Url.Action("CSVGrid", "Movies")",
+                dataType: "html",
+                success: function (response) {
+                    console.log("success");
+                    $('#grid').html(response);
+                },
+                error: function (xhr, textStatus) {
+                    console.log(xhr.status);
                 }
-                $.ajax({
-                    type: 'GET',
-                    url: "@Url.Action("Read_File","Movies")",
-                    dataType: 'json',
-                    processData: false,
-                    contentType: false,
-                    data: formData,
-                    success: function (data) {
-                        console.log("succcess");
-                        $("#grid").html(hx-get = "CSVGrid");
-
-                    },
-                    error: function (err) {
-                        console.log("failure");
-                    }
-                });
             });
-        });
+
+            $.ajax({
+                type: "POST",
+                url: "@Url.Action("Read_File", "Movies")",
+                dataType: 'json',
+                success: function (response,status,xhr) {
+                    const first = response.split(' ')[0]
+                    if (first == "Error:")
+                    {
+                        console.log(first);
+                        trHTML += '<h5>' + response + '</h5>';
+                        $('#error').html(trHTML);
+                    }
+                },
+
+                error: function (xhr, textStatus) {
+
+                    console.log(xhr.status, response);
+                    trHTML += '<h5>' + response + '</h5>';
+                    $('#error').html(trHTML);
+                }
+            });
+        }
+        
     </script>
 }

@@ -345,25 +345,6 @@ public class MoviesController : Controller
     [Route("Kendo", Name = "Kendo_Index")]
     public IActionResult Kendo_Index()
     {
-        using (var reader =
-               new StreamReader(
-                   "C:\\Users\\papachristouj\\source\\repos\\MvcMovie\\MvcMovie\\Uploaded_Files\\Newsletter_Elite_814.csv"))
-        using (var csv = new CsvReader(reader, CultureInfo.InvariantCulture))
-        {
-            IEnumerable<CSVModel> records;
-            try
-            {
-                records = csv.GetRecords<CSVModel>();
-                if (records.IsNotNullOrEmpty())
-                {
-                }
-            }
-            catch (Exception ex)
-            {
-                ViewData["fail"] = ex.Message;
-            }
-        }
-
         var model = _movieService.GetCollection();
 
         return View(model);
@@ -386,15 +367,26 @@ public class MoviesController : Controller
 
         using (var reader =
                new StreamReader(
-                   "C:\\Users\\papachristouj\\source\\repos\\MvcMovie\\MvcMovie\\Files\\Newsletter_Elite_814.csv"))
+                   "C:\\Users\\papachristouj\\source\\repos\\MvcMovie\\MvcMovie\\Uploaded Files\\Newsletter_Elite_814.csv"))
         using (var csv = new CsvReader(reader, CultureInfo.InvariantCulture))
         {
             var records = csv.GetRecords<CSVModel>();
-            
-            return Json(records.ToArray().ToDataSourceResult(request));
+
+            try
+            {
+                return Json(records.ToArray().ToDataSourceResult(request));
+            }
+            catch (Exception e)
+            {
+                
+ 
+                return Json("Error: " + e.Message);
+            }
+           
         }
     }
 
+    private string fileName = Guid.NewGuid().ToString() + ".csv";
     [Route("upload-file", Name = "Upload_File")]
     [HttpPost]
     public ActionResult Upload_File(FileModel model)
@@ -404,8 +396,8 @@ public class MoviesController : Controller
 
         // save the files to the folder
 
-        //var fileName = Guid.NewGuid() + Path.GetExtension(model.File.FileName);
-        var filePath = Path.Combine(folder, model.File.FileName);
+        
+        var filePath = Path.Combine(folder, fileName);
         using (var stream = new FileStream(filePath, FileMode.Create))
         {
             model.File.CopyTo(stream);
@@ -414,7 +406,7 @@ public class MoviesController : Controller
         return Ok();
     }
     [Route("csv-grid", Name = "CSV_Grid")]
-    [HttpPost]
+    [HttpGet]
     public IActionResult CSVGrid()
     {
         return View("CSVGrid");

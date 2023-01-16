@@ -5,7 +5,9 @@ using System.Globalization;
 using CsvHelper;
 using Kendo.Mvc.Extensions;
 using Kendo.Mvc.UI;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Hosting;
 using MvcMovie.Extensions;
 using MvcMovie.Models;
 using MvcMovie.Services;
@@ -20,13 +22,19 @@ public class MoviesController : Controller
 
     private readonly IMovieTypeService _movieTypeService;
 
+    private readonly IWebHostEnvironment _env;
 
-    public MoviesController(IMovieService movieService, IMovieTypeService movieTypeService)
+
+    public MoviesController(IMovieService movieService, IMovieTypeService movieTypeService, IWebHostEnvironment env)
     {
         _movieService = movieService;
 
         _movieTypeService = movieTypeService;
+
+        _env = env;
     }
+
+ 
 
     [Route("json", Name = "Movies_Json_Index")]
     public IActionResult Json_Index()
@@ -363,11 +371,10 @@ public class MoviesController : Controller
     [HttpPost]
     public ActionResult Read_File([DataSourceRequest] DataSourceRequest request)
     {
-       
+      
+        string path = FindPath.MapPath("UploadedFiles");
 
-        using (var reader =
-               new StreamReader(
-                   "C:\\Users\\papachristouj\\source\\repos\\MvcMovie\\MvcMovie\\Uploaded Files\\Newsletter_Elite_814.csv"))
+        using (var reader = new StreamReader(path))
         using (var csv = new CsvReader(reader, CultureInfo.InvariantCulture))
         {
             var records = csv.GetRecords<CSVModel>();
@@ -391,13 +398,13 @@ public class MoviesController : Controller
     [HttpPost]
     public ActionResult Upload_File(FileModel model)
     {
-        var folder = "C:\\Users\\papachristouj\\source\\repos\\MvcMovie\\MvcMovie\\Uploaded Files\\";
-        if (!Directory.Exists(folder)) Directory.CreateDirectory(folder);
-
+      
+        string path = FindPath.MapPath("UploadedFiles");
+      
         // save the files to the folder
 
-        var fileName = Guid.NewGuid() + Path.GetExtension(model.File.FileName);
-        var filePath = Path.Combine(folder, model.File.FileName);
+        var fileName = $"{DateTime.UtcNow.ToString("yyyy_MM_dd_HH_mm_ss")}_{Guid.NewGuid()}{Path.GetExtension(model.File.FileName)}"; 
+        var filePath = Path.Combine(path, model.File.FileName);
         using (var stream = new FileStream(filePath, FileMode.Create))
         {
             model.File.CopyTo(stream);
@@ -405,6 +412,7 @@ public class MoviesController : Controller
 
         return Ok();
     }
+
     [Route("csv-grid", Name = "CSV_Grid")]
     [HttpGet]
     public IActionResult CSVGrid()

@@ -22,7 +22,7 @@
 <div id="grids" style="display: none;">
 
     <kendo-grid name="grid" auto-bind="false"
-    on-data-bound="onChange">
+    on-data-bound="onDataBound">
         <groupable enabled="true" />
         <sortable enabled="true" />
         <filterable enabled="true" />
@@ -117,7 +117,7 @@
             }).join(", ");
         }
 
-        function onChange(e){
+        function onDataBound(e) {
             var grid = $("#grid").data("kendoGrid");
             var dataSource = grid.dataSource;
             var totalRecords = dataSource.total();

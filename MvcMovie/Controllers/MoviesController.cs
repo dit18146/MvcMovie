@@ -368,11 +368,14 @@ public class MoviesController : Controller
 
 
     [Route("read-file", Name = "Read_File")]
-    [HttpPost]
     public ActionResult Read_File([DataSourceRequest] DataSourceRequest request)
     {
       
         string path = FindPath.MapPath("UploadedFiles");
+        path = path + "\\Newsletter_Elite_814.csv";
+
+        if(path.IsNullOrEmptyOrWhiteSpace())
+            return NotFound();
 
         using (var reader = new StreamReader(path))
         using (var csv = new CsvReader(reader, CultureInfo.InvariantCulture))
@@ -403,7 +406,7 @@ public class MoviesController : Controller
       
         // save the files to the folder
 
-        var fileName = $"{DateTime.UtcNow.ToString("yyyy_MM_dd_HH_mm_ss")}_{Guid.NewGuid()}{Path.GetExtension(model.File.FileName)}"; 
+        //var fileName = $"{DateTime.UtcNow.ToString("yyyy_MM_dd_HH_mm_ss")}_{Guid.NewGuid()}{Path.GetExtension(model.File.FileName)}"; 
         var filePath = Path.Combine(path, model.File.FileName);
         using (var stream = new FileStream(filePath, FileMode.Create))
         {
@@ -411,13 +414,6 @@ public class MoviesController : Controller
         }
 
         return Ok();
-    }
-
-    [Route("csv-grid", Name = "CSV_Grid")]
-    [HttpGet]
-    public IActionResult CSVGrid()
-    {
-        return View("CSVGrid");
     }
 
 

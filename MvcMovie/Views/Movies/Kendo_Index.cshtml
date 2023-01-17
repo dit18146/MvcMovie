@@ -2,28 +2,44 @@
 <br/>
 
 <div id ="upload">
-    @(Html.Kendo().Upload()
-        .Name("file")
-        .Async(a => a
-            .Save("Upload_File","Movies")
-            .AutoUpload(false)
-        
-                
-        )
-        .Events(events => events.Upload("onUpload"))
-        .DropZone(".dropZoneElement")
-        .Multiple(false)
-        .Validation(validation =>
-        {
-            validation.AllowedExtensions("csv");
-            validation.MaxFileSize(3145728);
+   <kendo-upload name="file" 
+   on-cancel="onCancel" 
+   on-complete="onComplete" 
+   on-error="onError" 
+   on-progress="onProgress" 
+   on-select="onSelect" 
+   on-success="onSuccess" 
+   on-upload="onUpload">
 
-        })
-        )
+    <async auto-upload="false" 
+    save-url="@Url.Action("Upload_File", "Movies")" />
+
+   </kendo-upload>
 
 </div>
 
-<div id="grid">
+<div id="grids" style="display: none;">
+
+    <kendo-grid name="grid" auto-bind="false">
+        <groupable enabled="true" />
+        <sortable enabled="true" />
+        <filterable enabled="true" />
+        <pageable enabled="true" />
+
+        <columns>
+            <column field="CustomerId" width="300" />
+            <column field="Login" />
+            <column field="X1" width="300" />
+        </columns>
+
+        <datasource type="DataSourceTagHelperType.Ajax" >
+            <transport >
+                <read url="@Url.Action("Read_File", "Movies")" />
+            </transport>
+        </datasource>
+
+    </kendo-grid>
+
 
 </div>
 
@@ -31,7 +47,7 @@
 
 <br>
 
-<div id="error">
+<div id="log">
 
 </div>
 
@@ -39,44 +55,64 @@
 {
     <script>
         var trHTML = '';
+        function onSelect(e) {
+            console.log("Select :: " + getFileInfo(e));
+            trHTML += "<br> Select :: " + getFileInfo(e);
+            $('#log').html(trHTML);
+        }
+
         function onUpload(e) {
-            $.ajax({
-                type: "GET",
-                url: "@Url.Action("CSVGrid", "Movies")",
-                dataType: "html",
-                success: function (response) {
-                    console.log("success");
-                    $('#grid').html(response);
-                    var div = document.getElementById("upload");
-                    div.style.display = "none";
+            console.log("Upload :: " + getFileInfo(e));
+            trHTML += "<br> Upload :: " + getFileInfo(e);
+            $('#log').html(trHTML);
+        }
 
-                },
-                error: function (xhr, textStatus) {
-                    console.log(xhr.status);
+        function onSuccess(e) {
+            console.log("Success (" + e.operation + ") :: " + getFileInfo(e));
+            trHTML += "<br> Success (" + e.operation + ") :: " + getFileInfo(e);
+            $('#log').html(trHTML);
+
+        }
+
+        function onError(e) {
+            console.log("Error (" + e.operation + ") :: " + getFileInfo(e));
+            trHTML += "<br> Error (" + e.operation + ") :: " + getFileInfo(e);
+            $('#log').html(trHTML);
+        }
+
+        function onComplete(e) {
+            console.log("Complete");
+            trHTML += "<br> Complete";
+            $('#log').html(trHTML);
+
+            document.getElementById("grids").style.display = "block";
+            $('#grid').data('kendoGrid').dataSource.read();
+
+        }
+
+        function onCancel(e) {
+            console.log("Cancel :: " + getFileInfo(e));
+            trHTML = "<br> Cancel :: " + getFileInfo(e);
+            $('#log').html(trHTML);
+        }
+
+   
+        function onProgress(e) {
+            console.log("<br>Upload progress :: " + e.percentComplete + "% :: " + getFileInfo(e));
+            trHTML = "<br> Upload progress :: " + e.percentComplete + "% :: " + getFileInfo(e);
+            $('#log').html(trHTML);
+        }
+
+        function getFileInfo(e) {
+            return $.map(e.files, function (file) {
+                var info = file.name;
+
+                // File size is not available in all browsers
+                if (file.size > 0) {
+                    info += " (" + Math.ceil(file.size / 1024) + " KB)";
                 }
-            });
-
-            $.ajax({
-                type: "POST",
-                url: "@Url.Action("Read_File", "Movies")",
-                dataType: 'json',
-                success: function (response,status,xhr) {
-                    const first = response.split(' ')[0]
-                    if (first == "Error:")
-                    {
-                        console.log(first);
-                        trHTML += '<h5>' + response + '</h5>';
-                        $('#error').html(trHTML);
-                    }
-                },
-
-                error: function (xhr, textStatus) {
-
-                    console.log(xhr.status, response);
-                    trHTML += '<h5>' + response + '</h5>';
-                    $('#error').html(trHTML);
-                }
-            });
+                return info;
+            }).join(", ");
         }
         
     </script>

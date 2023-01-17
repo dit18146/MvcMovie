@@ -14,6 +14,7 @@ using MvcMovie.Services;
 
 namespace MvcMovie.Controllers;
 
+
 [Route("movies")]
 //[Route("[controller]/[action]/[?id]")]
 public class MoviesController : Controller
@@ -24,6 +25,7 @@ public class MoviesController : Controller
 
     private readonly IWebHostEnvironment _env;
 
+    private static string fileName;
 
     public MoviesController(IMovieService movieService, IMovieTypeService movieTypeService, IWebHostEnvironment env)
     {
@@ -366,13 +368,13 @@ public class MoviesController : Controller
         return Json(model.Items.ToDataSourceResult(request));
     }
 
-
+    
     [Route("read-file", Name = "Read_File")]
     public ActionResult Read_File([DataSourceRequest] DataSourceRequest request)
     {
       
         string path = FindPath.MapPath("UploadedFiles");
-        path = path + "\\Newsletter_Elite_814.csv";
+        path = path + "//" + fileName;
 
         if(path.IsNullOrEmptyOrWhiteSpace())
             return NotFound();
@@ -389,8 +391,8 @@ public class MoviesController : Controller
             catch (Exception e)
             {
                 
- 
-                return Json("Error: " + e.Message);
+               int[] arr = new int[0];
+                return Json(arr.ToDataSourceResult(request));
             }
            
         }
@@ -406,8 +408,8 @@ public class MoviesController : Controller
       
         // save the files to the folder
 
-        //var fileName = $"{DateTime.UtcNow.ToString("yyyy_MM_dd_HH_mm_ss")}_{Guid.NewGuid()}{Path.GetExtension(model.File.FileName)}"; 
-        var filePath = Path.Combine(path, model.File.FileName);
+        fileName = $"{DateTime.UtcNow.ToString("yyyy_MM_dd_HH_mm_ss")}_{Guid.NewGuid()}{Path.GetExtension(model.File.FileName)}"; 
+        var filePath = Path.Combine(path, fileName);
         using (var stream = new FileStream(filePath, FileMode.Create))
         {
             model.File.CopyTo(stream);

@@ -2,7 +2,8 @@
 <br/>
 
 <div id ="upload">
-   <kendo-upload name="file" 
+   <kendo-upload name="file"
+   multiple="false"
    on-cancel="onCancel" 
    on-complete="onComplete" 
    on-error="onError" 
@@ -20,7 +21,8 @@
 
 <div id="grids" style="display: none;">
 
-    <kendo-grid name="grid" auto-bind="false">
+    <kendo-grid name="grid" auto-bind="false"
+    on-data-bound="onChange">
         <groupable enabled="true" />
         <sortable enabled="true" />
         <filterable enabled="true" />
@@ -113,6 +115,19 @@
                 }
                 return info;
             }).join(", ");
+        }
+
+        function onChange(e){
+            var grid = $("#grid").data("kendoGrid");
+            var dataSource = grid.dataSource;
+            var totalRecords = dataSource.total();
+
+            if (totalRecords == 0)
+            {
+                trHTML = "Model validation failed, please check csv file headers or columns";
+                $('#log').html(trHTML);
+                document.getElementById("grids").style.display = "none";
+            }
         }
         
     </script>

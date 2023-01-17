@@ -13,7 +13,7 @@
    on-upload="onUpload">
 
     <async auto-upload="false" 
-    save-url="@Url.Action("Upload_File", "Movies")" />
+    save-url="@Url.Action("Upload_File", "Kendo")" />
 
    </kendo-upload>
 
@@ -36,7 +36,7 @@
 
         <datasource type="DataSourceTagHelperType.Ajax" >
             <transport >
-                <read url="@Url.Action("Read_File", "Movies")" />
+                <read url="@Url.Action("Read_File", "Kendo")" />
             </transport>
         </datasource>
 

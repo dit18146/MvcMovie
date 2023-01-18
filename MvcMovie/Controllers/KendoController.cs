@@ -6,6 +6,7 @@ using MvcMovie.Extensions;
 using MvcMovie.Models;
 using MvcMovie.Services;
 using System.Globalization;
+using System.Text.RegularExpressions;
 
 namespace MvcMovie.Controllers
 {
@@ -13,19 +14,17 @@ namespace MvcMovie.Controllers
     public class KendoController : Controller
     {
         
-        private readonly IMovieService _movieService;
-
-        private readonly IMovieTypeService _movieTypeService;
+        private readonly IFileservice _fileService;
 
         private readonly IWebHostEnvironment _env;
 
         private static string fileName;
 
-         public KendoController(IMovieService movieService, IMovieTypeService movieTypeService, IWebHostEnvironment env)
-         {
-            _movieService = movieService;
+        private static long newsletterId;
 
-            _movieTypeService = movieTypeService;
+         public KendoController(IFileservice fileService,  IWebHostEnvironment env)
+         {
+            _fileService = fileService;
 
             _env = env;
          }
@@ -33,7 +32,7 @@ namespace MvcMovie.Controllers
         [Route("Index", Name = "Index")]
         public IActionResult Kendo_Index()
         {
-            var model = _movieService.GetCollection();
+            var model = _fileService.GetCollection();
 
             return View(model);
         }
@@ -47,53 +46,74 @@ namespace MvcMovie.Controllers
       
             // save the files to the folder
 
-            fileName = $"{DateTime.UtcNow.ToString("yyyy_MM_dd_HH_mm_ss")}_{Guid.NewGuid()}{Path.GetExtension(model.File.FileName)}"; 
+            fileName = $"{DateTime.UtcNow.ToString("yyyy_MM_dd_HH_mm_ss")}_{Guid.NewGuid()}{Path.GetExtension(model.File.FileName)}";
+
+            newsletterId = Int32.Parse(Regex.Match(model.File.FileName, "\\d+").ToString());
+
             var filePath = Path.Combine(path, fileName);
+
             using (var stream = new FileStream(filePath, FileMode.Create))
             {
                 model.File.CopyTo(stream);
             }
 
+            Read_File();
+
             return Ok();
         }
 
         [Route("read-file", Name = "Read_File")]
-        public ActionResult Read_File([DataSourceRequest] DataSourceRequest request)
+        public void Read_File()
         {
       
             string path = FindPath.MapPath("UploadedFiles");
+
             path = path + "//" + fileName;
 
-            if(path.IsNullOrEmptyOrWhiteSpace())
-                return NotFound();
+           
 
             using (var reader = new StreamReader(path))
+
             using (var csv = new CsvReader(reader, CultureInfo.InvariantCulture))
             {
                 var records = csv.GetRecords<CSVModel>();
 
-                try
+                csv.Read();
+                csv.ReadHeader();
+                while (csv.Read())
                 {
-                    return Json(records.ToArray().ToDataSourceResult(request));
+                    CSVModel record = new CSVModel();
+
+                    record.NewsletterId = newsletterId;
+                    record.CustomerId = csv.GetField<long>("CustomerId");
+                    record.Username = csv.GetField<string>("Login");
+                    record.X1 = csv.GetField<string>("X1");
+                  
+                    _fileService.Add(record);
                 }
+               
+           
+            }
+        } 
+
+         public ActionResult Read_Database([DataSourceRequest] DataSourceRequest request)
+         {
+            var records = _fileService.GetCollection();
+           
+            
+             try
+             {
+                    return Json(records.Items.ToDataSourceResult(request));
+
+             }
                 catch (Exception e)
                 {
                 
                    int[] arr = new int[0];
+
                     return Json(arr.ToDataSourceResult(request));
                 }
-           
-            }
-        }
-
-        [Route("json-kendo", Name = "Kendo_Json_Index")]
-        public IActionResult Kendo_Json([DataSourceRequest] DataSourceRequest request)
-        {
-            var model = _movieService.GetCollection();
-
-            return Json(model.Items.ToDataSourceResult(request));
-        }
-
+         }
 
     }
 }

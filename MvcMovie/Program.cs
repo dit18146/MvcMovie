@@ -6,13 +6,15 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddSingleton<IMovieService, MemoryMovieService>();   //When IMovieService is used an instance of MemoryMovieService is created
 
 
-//builder.Services.AddSingleton<ISqlHelper, SqlHelper>();
+builder.Services.AddSingleton<ISqlHelper, SqlHelper>();
 
 //builder.Services.AddSingleton<IMovieService, DbMovieService>();
 
 //builder.Services.AddSingleton<IMovieService, DapperMovieService>();
 
 builder.Services.AddSingleton<IMovieTypeService, DbMovieTypeService>();
+
+builder.Services.AddSingleton<IFileservice, DbFileService>();
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();

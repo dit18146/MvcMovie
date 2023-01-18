@@ -126,9 +126,6 @@ public class MoviesController : Controller
     {
         var model = _movieService.GetCollection();
 
-        //var model = await _movieService.GetCollectionAsync().ConfigureAwait(false);
-
-
         return View(model);
     }
 

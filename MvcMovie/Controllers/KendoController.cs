@@ -56,14 +56,27 @@ namespace MvcMovie.Controllers
             {
                 model.File.CopyTo(stream);
             }
+           
+            var xhr = Read_File();
 
-            Read_File();
+            if (xhr == 200)
 
-            return Ok();
+                 return Ok();
+
+            else if (xhr == 400)
+
+                return StatusCode(400);
+
+            else
+
+                return StatusCode(500);
+
+           
+           
         }
 
         [Route("read-file", Name = "Read_File")]
-        public void Read_File()
+        public int Read_File()
         {
       
             string path = FindPath.MapPath("UploadedFiles");
@@ -80,27 +93,44 @@ namespace MvcMovie.Controllers
 
                 csv.Read();
                 csv.ReadHeader();
-                while (csv.Read())
-                {
-                    CSVModel record = new CSVModel();
+                _fileService.DeleteAll();
 
-                    record.NewsletterId = newsletterId;
-                    record.CustomerId = csv.GetField<long>("CustomerId");
-                    record.Username = csv.GetField<string>("Login");
-                    record.X1 = csv.GetField<string>("X1");
-                  
-                    _fileService.Add(record);
+                try
+                {
+                      while (csv.Read())
+                      {
+                        CSVModel record = new CSVModel();
+
+                        record.NewsletterId = newsletterId;
+                        record.CustomerId = csv.GetField<long>("CustomerId");
+                        record.Username = csv.GetField<string>("Login");
+                        record.X1 = csv.GetField<string>("X1");
+                        _fileService.Add(record);
+                        
+                      }
                 }
+                catch(Exception ex) {
+                    CSVModel errorModel = new CSVModel();
+                    _fileService.DeleteAll();
+
+                    if(ex.Source == "CsvHelper")
+                        return 400;
+
+                    else if(ex.Source == "System.Data.SQLite")
+                        return 500;
+                    
+                }
+                return 200;
                
-           
             }
-        } 
+        }
+        
+     
 
          public ActionResult Read_Database([DataSourceRequest] DataSourceRequest request)
          {
             var records = _fileService.GetCollection();
            
-            
              try
              {
                     return Json(records.Items.ToDataSourceResult(request));

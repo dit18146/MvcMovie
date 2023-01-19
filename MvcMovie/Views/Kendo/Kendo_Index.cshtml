@@ -1,4 +1,6 @@
-﻿<br/>
+﻿@model CSVModels;
+
+<br/>
 <br/>
 
 <div id ="upload">
@@ -19,9 +21,9 @@
 
 </div>
 
-<div id="grids" style="display: block;">
+<div id="grids" style="display: none;">
 
-    <kendo-grid name="grid" auto-bind="true"
+    <kendo-grid name="grid" auto-bind="false"
     on-data-bound="onDataBound">
         <groupable enabled="true" />
         <sortable enabled="true" />
@@ -29,9 +31,9 @@
         <pageable enabled="true" />
 
         <columns>
-            <column field="NewsLetterId" width="300" />
+            <column field="NewsletterId" width="300" />
             <column field="CustomerId" width="300" />
-            <column field="Login" />
+            <column field="Username" />
             <column field="X1" width="300" />
         </columns>
 
@@ -48,16 +50,21 @@
 
 <br>
 
+
 <br>
 
 <div id="log">
-
+   
+    
+   
 </div>
 
 @section Scripts
 {
     <script>
         var trHTML = '';
+        const isUploadError = new Boolean(false);
+
         function onSelect(e) {
             console.log("Select :: " + getFileInfo(e));
             trHTML += "<br> Select :: " + getFileInfo(e);
@@ -78,9 +85,23 @@
         }
 
         function onError(e) {
+            var xhr = e.XMLHttpRequest;
             console.log("Error (" + e.operation + ") :: " + getFileInfo(e));
             trHTML += "<br> Error (" + e.operation + ") :: " + getFileInfo(e);
+            if (xhr.status == 500)
+            {
+                trHTML += "<br> <h2>Error 500, SQL error, check for duplicate columns</h2>";
+            }
+            else if (xhr.status == 400)
+            {
+                trHTML += "< br > <h2>Error 400. Model validation failed, please check csv file headers or columns.</h2>";
+            }
+            else
+            {
+                trHTML += "< br > <h2>File upload error</h2>";
+            }
             $('#log').html(trHTML);
+            isUploadError = true;
         }
 
         function onComplete(e) {
@@ -88,8 +109,8 @@
             trHTML += "<br> Complete";
             $('#log').html(trHTML);
 
-            //document.getElementById("grids").style.display = "block";
-            //$('#grid').data('kendoGrid').dataSource.read();
+            document.getElementById("grids").style.display = "block";
+            $('#grid').data('kendoGrid').dataSource.read();
 
         }
 
@@ -123,9 +144,9 @@
             var dataSource = grid.dataSource;
             var totalRecords = dataSource.total();
 
-            if (totalRecords == 0)
+            if (totalRecords == 0 && isUploadError == false)
             {
-                trHTML = "Model validation failed, please check csv file headers or columns";
+                
                 $('#log').html(trHTML);
                 document.getElementById("grids").style.display = "none";
             }

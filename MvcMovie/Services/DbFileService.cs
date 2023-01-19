@@ -34,33 +34,24 @@ namespace MvcMovie.Services
 
         public void Add(CSVModel item)
         {
+
             var sqliteCmd = _conn.CreateCommand();
 
-            sqliteCmd.CommandText = "INSERT INTO Newsletter(NewsletterId, CustomerId, Username, X1) VALUES (" + item.NewsletterId 
+            sqliteCmd.CommandText = "INSERT INTO File(NewsletterId, CustomerId, Username, X1) VALUES (" + item.NewsletterId 
                                     + "," + item.CustomerId + ", " + "' " + item.Username + "'" + "," + "' " + item.X1 + "'" + ") ;";
 
             sqliteCmd.ExecuteReader();
 
         }
 
-         public void Update(CSVModel item)
+         public void DeleteAll()
          {
             var sqliteCmd = _conn.CreateCommand();
 
-            CSVModels _db = new CSVModels();
+            sqliteCmd.CommandText = "DELETE FROM File";
 
-            sqliteCmd.CommandText = "UPDATE file SET NewsletterId = " + "'" + item.NewsletterId + "'" + ", CustomerId = " + "'" +
-                                    item.CustomerId + "'" + "," + " Login = " + "'" + item.Username + "'" + ", X1 = " + "'" +
-                                    item.X1 + "'" +
-                                    "WHERE id = " + item.CustomerId + ";";
+           sqliteCmd.ExecuteReader();
 
-            var sqliteDataReader = sqliteCmd.ExecuteReader();
-
-            while (sqliteDataReader.Read())
-                _db.Items.Add(new CSVModel(sqliteDataReader.GetInt64(0), sqliteDataReader.GetInt64(1),
-                    sqliteDataReader.GetString(2), sqliteDataReader.GetString(3)));
-
-            sqliteDataReader.Close();
          }
 
          public CSVModels? GetCollection()
@@ -71,15 +62,29 @@ namespace MvcMovie.Services
 
             var sqliteCmd = _conn.CreateCommand();
 
-            sqliteCmd.CommandText = "SELECT NewsletterId, CustomerId, Username, X1 FROM Newsletter";
+            sqliteCmd.CommandText = "SELECT NewsletterId, CustomerId, Username, X1 FROM File";
 
             var sqliteDataReader = sqliteCmd.ExecuteReader();
 
-           while (sqliteDataReader.Read())
-               _db.Items.Add(new CSVModel(sqliteDataReader.GetInt64(0), sqliteDataReader.GetInt64(1),
-                    sqliteDataReader.GetString(2), sqliteDataReader.GetString(3)));
-        
+            while (sqliteDataReader.Read())
+            {
+                long newsletterId = sqliteDataReader.GetInt64(0);
+                long customerId = sqliteDataReader.GetInt64(1);
+                string username = sqliteDataReader.GetString(2);
+                string x1 = sqliteDataReader.GetInt32(3).ToString();
+
+                _db.Items.Add(new CSVModel(newsletterId, customerId,
+                  username, x1));
+            }
            
+        
+           /*while (sqliteDataReader.Read())
+            {
+                Console.WriteLine(sqliteDataReader.GetInt64(0));
+                Console.WriteLine(sqliteDataReader.GetInt64(1));
+                Console.WriteLine(sqliteDataReader.GetString(2));
+                Console.WriteLine(sqliteDataReader.GetInt32(3));
+            }*/
             
             sqliteDataReader.Close();
 
@@ -89,28 +94,13 @@ namespace MvcMovie.Services
 
          
 
-         /*public async Task<CSVModels?> GetCollectionAsync()
-         {
-
-                var query = await _db.QueryAsync<FileDto>(_sqlConnString,
-                    "SELECT NewsletterId, CustomerId, Username, X1 FROM [File]",
-                    commandType: CommandType.Text).ConfigureAwait(false);
-                
-
-                var records = new CSVModels();
-                {
-                    //Items = query.Value
-                };
-                return records;
-         }*/
-
-        public CSVModel? GetById(int? customerId)
+        public CSVModel? GetById(long newsletterId)
         {
             CreateConnection();
 
             var sqliteCmd = _conn.CreateCommand();
 
-            sqliteCmd.CommandText = "SELECT * FROM File WHERE id = " + customerId;
+            sqliteCmd.CommandText = "SELECT * FROM File WHERE NewsletterId = " + newsletterId;
 
 
             var sqliteDataReader = sqliteCmd.ExecuteReader();
@@ -121,12 +111,18 @@ namespace MvcMovie.Services
 
         
             while (sqliteDataReader.Read())
-                 _db.Items.Add(new CSVModel(sqliteDataReader.GetInt64(0), sqliteDataReader.GetInt64(1),
-                    sqliteDataReader.GetString(2), sqliteDataReader.GetString(3)));
+            {
+                long customerId = sqliteDataReader.GetInt64(1);
+                string username = sqliteDataReader.GetString(2);
+                string x1 = sqliteDataReader.GetInt32(3).ToString();
+
+                _db.Items.Add(new CSVModel(newsletterId, customerId,
+                  username, x1));
+            }
 
             sqliteDataReader.Close();
 
-            return _db.Items.FirstOrDefault(x => x.CustomerId == customerId);
+            return _db.Items.FirstOrDefault(x => x.NewsletterId == newsletterId);
         }
         public void CloseConnection()
         {

@@ -4,12 +4,14 @@ namespace MvcMovie.Services
 {
     public interface IFileservice
     {
-        CSVModel? GetById(int? id);
+        CSVModel? GetById(long newsletterId);
 
         CSVModels? GetCollection();
 
         void Add(CSVModel item);
 
-        void Update(CSVModel item);
+        void DeleteAll();
+
+
     }
 }

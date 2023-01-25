@@ -1,7 +1,6 @@
-﻿@using MvcMovie.Components;
-@model Movie;
+﻿@model Movie
 
-
+<h5>View Component Details</h5>
 <table>
     <tr>
         <th> Movie ID</th>
@@ -15,9 +14,3 @@
         <td>@Model.Name</td>
     </tr>
 </table>
-
-<br />
-
-<br />
-
-@await Component.InvokeAsync(nameof(Details), new {id = Model.Id})

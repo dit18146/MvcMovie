@@ -131,7 +131,7 @@ public class MoviesController : Controller
 
 
     [Route("detail/{id:int?}", Name = "Movies_Details")] //naming is important        
-    public IActionResult Details(int? id)
+    public IActionResult Details(int? id) 
     {
         var model = _movieService.GetById(id);
 

@@ -20,4 +20,5 @@
 
 <br />
 
-@await Component.InvokeAsync(nameof(Details), new {id = Model.Id})
+@*@await Component.InvokeAsync(nameof(DetailsViewComponent), new {id = Model.Id})*@
+<vc:details id="@Model.Id" />

@@ -3,13 +3,14 @@ using MvcMovie.Services;
 
 namespace MvcMovie.Components
 {
-    public class Details : ViewComponent
+    [ViewComponent(Name = "Details")]
+    public class DetailsViewComponent : ViewComponent
     {
         private readonly IMovieService _movieService;
 
         private readonly IMovieTypeService _movieTypeService;
 
-        public Details(IMovieService movieService, IMovieTypeService movieTypeService)
+        public DetailsViewComponent(IMovieService movieService, IMovieTypeService movieTypeService)
         {
             _movieService= movieService;
 

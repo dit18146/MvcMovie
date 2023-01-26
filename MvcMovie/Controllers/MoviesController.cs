@@ -1,19 +1,8 @@
-﻿using System.Drawing;
-using System.Drawing.Drawing2D;
-using System.Drawing.Imaging;
-using System.Globalization;
-using CsvHelper;
-using Kendo.Mvc.Extensions;
-using Kendo.Mvc.UI;
-using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Hosting;
-using MvcMovie.Extensions;
+﻿using Microsoft.AspNetCore.Mvc;
 using MvcMovie.Models;
 using MvcMovie.Services;
 
 namespace MvcMovie.Controllers;
-
 
 [Route("movies")]
 //[Route("[controller]/[action]/[?id]")]
@@ -36,7 +25,6 @@ public class MoviesController : Controller
         _env = env;
     }
 
- 
 
     [Route("json", Name = "Movies_Json_Index")]
     public IActionResult Json_Index()
@@ -131,7 +119,7 @@ public class MoviesController : Controller
 
 
     [Route("detail/{id:int?}", Name = "Movies_Details")] //naming is important        
-    public IActionResult Details(int? id) 
+    public IActionResult Details(int? id)
     {
         var model = _movieService.GetById(id);
 
@@ -351,8 +339,5 @@ public class MoviesController : Controller
 
 
     [Route("modal", Name = "Modal")]
-    public IActionResult Modal()
-    {
-        return PartialView("_Dialog");
-    }
+    public IActionResult Modal() => PartialView("_Dialog");
 }

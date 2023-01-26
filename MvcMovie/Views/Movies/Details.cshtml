@@ -21,4 +21,22 @@
 
 <br/>
 
+
 <vc:movie-details id="@Model.Id"></vc:movie-details>
+
+<br />
+
+<br />
+
+<button class='btn btn-primary btn-lg' hx-get="@Url.Action("Category_Details","Movies",  new {id = Model.MovieTypeId})"
+        hx-target="#MovieTypeDetails"
+        hx-swap="outerHTML">
+        Get Movie Type details
+</button>
+
+<br />
+
+<br />
+
+<div id="MovieTypeDetails">
+</div>

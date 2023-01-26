@@ -1,6 +1,9 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using MvcMovie.Components;
 using MvcMovie.Models;
 using MvcMovie.Services;
+using System.Net.Mail;
+using System.Runtime.CompilerServices;
 
 namespace MvcMovie.Controllers;
 
@@ -273,6 +276,7 @@ public class MoviesController : Controller
         return View(model);
     }
 
+  
 
     [Route("createCategory", Name = "Create_Category")]
     [HttpGet]
@@ -302,6 +306,18 @@ public class MoviesController : Controller
 
         return View(model);
     }
+
+
+    [Route("category-details/{id:int?}", Name = "Category_Details"), HttpGet]
+     public IActionResult Category_Details(int? id)
+     {
+        return ViewComponent("MovieTypeDetails",
+        new { 
+            id= id
+        });
+     }
+
+
 
     [Route("updateCategory/{id:int?}", Name = "Update_Category_Get")]
     [HttpGet]

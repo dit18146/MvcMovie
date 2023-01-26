@@ -4,7 +4,8 @@
     <tr>
         <th>ID</th>
         <th>Name</th>
-        <th></th>
+        <th>Details</th>
+        <th>Edit</th>
         <th></th>
     </tr>
     @foreach (var item in Model.Items)
@@ -14,7 +15,9 @@
 
             <td>@item.Name</td>
 
-            <td><a href="@Url.Action("Update_Category", "Movies", new {id = item.Id})">Edit</a></td
+            <td><a href="@Url.Action("Category_Details", "Movies", new {id = item.Id})">Details</a></td>
+
+            <td><a href="@Url.Action("Update_Category", "Movies", new {id = item.Id})">Edit</a></td>
 
          
         </tr>

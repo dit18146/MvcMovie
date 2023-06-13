@@ -356,4 +356,5 @@ public class MoviesController : Controller
 
     [Route("modal", Name = "Modal")]
     public IActionResult Modal() => PartialView("_Dialog");
+
 }

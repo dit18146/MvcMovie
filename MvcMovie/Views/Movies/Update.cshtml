@@ -49,11 +49,11 @@
 
                     if (Model.MovieTypeId == items.Id)
                     {
-                            <option value="@items.Id" selected>@items.Name</option>
+                        <option value="@items.Id" selected>@items.Name</option>
                     }
                     else
                     {
-                            <option value="@items.Id">@items.Name</option>
+                        <option value="@items.Id">@items.Name</option>
                     }
                        
                 }
@@ -68,13 +68,13 @@
 
         </fieldset>
 
-         <br />
+        <br />
          
-         <div class = "btns">
+        <div class = "btns">
 
             <button id="subButton" type="submit"  class="btn btn-info btn-lg" data-toggle="modal" data-target="#MyPopUp">Update database</button>
             <button id="AjaxSubButton" type="button" class="btn btn-info btn-danger">Ajax Update</button>
-         </div>
+        </div>
 
         <br />
        
@@ -131,26 +131,164 @@
 
         <h1 style="color:red;"> @ViewData["fail"] </h1>
     </form>
+    
+    <form method="post" id="form2">
 
+        <input asp-for="Id" type="number" class="form-control" id="Id" aria-describedby="Id" placeholder="Enter Id" readonly hidden>
+
+        <label for="Title" class="form-label mt-4">Title</label>
+
+        <input asp-for="Title" type="text" class="form-control" id="Id" aria-describedby="Title" placeholder="Enter Title">
+
+        <small id="Id" class="form-text text-muted">Movie Title should be a text</small>
+
+        <label for="Description" class="form-label mt-4">Description</label>
+
+        <textarea asp-for="Description" type="text" class="form-control" id="Id" aria-describedby="Description" placeholder="Enter Description"> </textarea>
+
+        <small id="Id" class="form-text text-muted">Type movie description</small>
+
+        <fieldset>
+
+            Movie Type
+
+            <select id="MovieTypeId" name="MovieTypeId" class="form-select">
+
+                @foreach (var items in Model.Categories.Items)
+                {
+
+
+                    if (Model.MovieTypeId == items.Id)
+                    {
+                        <option value="@items.Id" selected>@items.Name</option>
+                    }
+                    else
+                    {
+                        <option value="@items.Id">@items.Name</option>
+                    }
+
+                }
+
+            </select>
+
+        </fieldset>
+
+        <div class="btns">
+            <button id="subForm2Button" type="submit" class="btn btn-info btn-lg">Update database</button>
+        </div>
+
+    </form>
+    
+<form method="post" id="form3">
+
+    <input asp-for="Id" type="number" class="form-control" id="Id" aria-describedby="Id" placeholder="Enter Id" readonly hidden>
+
+    <label for="Title" class="form-label mt-4">Title</label>
+
+    <input asp-for="Title" type="text" class="form-control" id="Id" aria-describedby="Title" placeholder="Enter Title">
+
+    <small id="Id" class="form-text text-muted">Movie Title should be a text</small>
+
+    <label for="Description" class="form-label mt-4">Description</label>
+
+    <textarea asp-for="Description" type="text" class="form-control" id="Id" aria-describedby="Description" placeholder="Enter Description"> </textarea>
+
+    <small id="Id" class="form-text text-muted">Type movie description</small>
+
+    <fieldset>
+
+        Movie Type
+
+        <select id="MovieTypeId" name="MovieTypeId" class="form-select">
+
+            @foreach (var items in Model.Categories.Items)
+            {
+
+
+                if (Model.MovieTypeId == items.Id)
+                {
+                    <option value="@items.Id" selected>@items.Name</option>
+                }
+                else
+                {
+                    <option value="@items.Id">@items.Name</option>
+                }
+
+            }
+
+        </select>
+
+    </fieldset>
+
+    <div class="btns">
+        <button id="subForm3Button" type="submit" class="btn btn-info btn-lg">Update database</button>
+    </div>
+
+</form>
+
+<form method="post" hx-post="@Url.RouteUrl("Update_Json_Post")" hx-target="#results" id="form4">
+
+    <input asp-for="Id" type="number" class="form-control" id="Id" aria-describedby="Id" placeholder="Enter Id" readonly hidden>
+
+    <label for="Title" class="form-label mt-4">Title</label>
+
+    <input asp-for="Title" type="text" class="form-control" id="Id" aria-describedby="Title" placeholder="Enter Title">
+
+    <small id="Id" class="form-text text-muted">Movie Title should be a text</small>
+
+    <label for="Description" class="form-label mt-4">Description</label>
+
+    <textarea asp-for="Description" type="text" class="form-control" id="Id" aria-describedby="Description" placeholder="Enter Description"> </textarea>
+
+    <small id="Id" class="form-text text-muted">Type movie description</small>
+
+    <fieldset>
+
+        Movie Type
+
+        <select id="MovieTypeId" name="MovieTypeId" class="form-select">
+
+            @foreach (var items in Model.Categories.Items)
+            {
+
+
+                if (Model.MovieTypeId == items.Id)
+                {
+                    <option value="@items.Id" selected>@items.Name</option>
+                }
+                else
+                {
+                    <option value="@items.Id">@items.Name</option>
+                }
+
+            }
+
+        </select>
+
+    </fieldset>
+
+    <div class="btns">
+        <button id="subForm4Button" type="submit" class="btn btn-info btn-lg">Update database</button>
+    </div>
+
+</form>
+
+<div id="results">
+
+</div>
 
 </div>
 
 @section Scripts
 {
 
-        <script type="text/javascript">
+    <script type="text/javascript">
 
             $(document).ready(function () {
 
                     var submitButtonElement = document.getElementById('subButton');
 
                     var ajaxSubmitButtonElement = document.getElementById('AjaxSubButton');
-
-                    /*submitButtonElement.addEventListener('click', function () {
-                        $('#MyPopUp').modal('show');
-                    });*/
-
-
 
                     ajaxSubmitButtonElement.addEventListener('click', function () {
                         $.ajax(
@@ -171,10 +309,32 @@
                         });
                     });
 
-                    
-                    
-            });     
-        </script>
+                    $("#form2").on( "submit", function(e) {
+                        e.preventDefault();
+                        $.ajax({
+                            type: "POST",
+                            url: "@Url.RouteUrl("Update_Json_Post")",
+                            data: $("#form2").serialize(),
+                            dataType: "json",
+                            success: function(response) {
+                                console.log(response);
+                            },
+                            error: function(xhr, status, error) {
+                                console.log(xhr.responseText);
+                            }
+                        });
+                    });
+            });
+            
+            const form = document.getElementById("form3");
+            form.addEventListener("submit", (e) => {
+            e.preventDefault();
+            fetch("@Url.RouteUrl("Update_Json_Post")", {
+                    method: "POST",
+                    body: new FormData(form)
+                });
+            });
+    </script>
 }
 
 
